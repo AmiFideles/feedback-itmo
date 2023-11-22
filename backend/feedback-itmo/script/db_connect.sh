@@ -1,0 +1,1 @@
+docker compose exec database psql -U itmo -d feedback_database
