@@ -1,9 +1,16 @@
 spring:
+  application:
+    name: feedback-itmo
   datasource:
     url: jdbc:postgresql://localhost:5432/your_database
-    username: your_username
-    password: your_password
+    username: postgres
+    password: new_password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
+accessTokenSecret: testAccessTokenSecret
+refreshTokenSecret: testRefreshTokenSecret
+accessTokenExpirationMinutes: 1
+refreshTokenExpirationDays: 2
+upload-dir: src/main/resources/static

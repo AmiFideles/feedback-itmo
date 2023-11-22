@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: feedback-itmo
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
@@ -7,5 +9,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  profiles:
-    active: dev
+accessTokenSecret: testAccessTokenSecret
+refreshTokenSecret: testRefreshTokenSecret
+accessTokenExpirationMinutes: 1
+refreshTokenExpirationDays: 2
+upload-dir: src/main/resources/static
