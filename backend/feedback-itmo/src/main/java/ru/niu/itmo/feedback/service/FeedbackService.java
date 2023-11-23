@@ -16,7 +16,9 @@ import ru.niu.itmo.feedback.entity.FeedbackStatus;
 import ru.niu.itmo.feedback.mapper.FeedbackMapper;
 import ru.niu.itmo.feedback.mapper.FeedbackSpecifications;
 import ru.niu.itmo.feedback.repository.FeedbackRepository;
+import ru.niu.itmo.feedback.service.exceptions.PhotoAlreadyExistsException;
 import ru.niu.itmo.feedback.service.exceptions.FeedbackNotFoundException;
+import ru.niu.itmo.feedback.service.exceptions.FileStorageException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -59,27 +61,26 @@ public class FeedbackService {
 
     // TODO Обработка ошибок
     public void savePhoto(MultipartFile file, Long feedbackId) {
+        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new FeedbackNotFoundException("Feedback not found with ID: " + feedbackId));
+        if (feedback.getPhotoUrl() != null) {
+            throw new PhotoAlreadyExistsException("Feedback with ID " + feedbackId + " already has a photo.");
+        }
         Path uploadPath = Path.of(uploadDir);
         if (!Files.exists(uploadPath)) {
             try {
                 Files.createDirectories(uploadPath);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new FileStorageException("Failed to create upload directory", e);
             }
         }
         String fileName = RandomStringUtils.randomAlphanumeric(8) + "_" + Objects.requireNonNull(file.getOriginalFilename());
         try {
             Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileStorageException("Failed to save photo", e);
         }
-        Feedback feedback = feedbackRepository.findById(feedbackId).orElse(null);
-        if (feedback != null) {
-            feedback.setPhotoUrl(fileName);
-            feedbackRepository.save(feedback);
-        }else{
-            throw new FeedbackNotFoundException("Feedback not found with ID: " + feedbackId);
-        }
+        feedback.setPhotoUrl(fileName);
+        feedbackRepository.save(feedback);
     }
 
     public FeedbackResponseDto getFeedbackById(Long feedbackId) {
@@ -93,42 +94,6 @@ public class FeedbackService {
         return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
-    public Page<FeedbackResponseDto> getFilteredAndApprovedFeedback(Integer graduationYear, String faculty, Pageable pageable, int seed) {
-        if (graduationYear != null && graduationYear < 0 && faculty == null) {
-            return findWithoutBothConditions(seed, pageable);
-        } else if (graduationYear != null && faculty == null) {
-            return findWithGraduationYear(graduationYear, seed, pageable);
-        } else if (graduationYear == null && faculty != null) {
-            return findWithFaculty(faculty, seed, pageable);
-        } else if (graduationYear != null && graduationYear < 0 && faculty != null) {
-            return findWithFaculty(faculty, seed, pageable);
-        } else if (graduationYear != null && faculty != null) {
-            return findWithBothConditions(graduationYear, faculty, seed, pageable);
-        } else {
-            return findWithoutBothConditions(seed, pageable);
-        }
-    }
-
-
-    private Page<FeedbackResponseDto> findWithGraduationYear(Integer graduationYear, int seed, Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findWithGraduationYear(graduationYear, seed, pageable);
-        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
-    }
-
-    private Page<FeedbackResponseDto> findWithFaculty(String faculty, int seed, Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findWithFaculty(faculty, seed, pageable);
-        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
-    }
-
-    private Page<FeedbackResponseDto> findWithBothConditions(Integer graduationYear, String faculty, int seed, Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findWithBothConditions(graduationYear, faculty, seed, pageable);
-        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
-    }
-
-    private Page<FeedbackResponseDto> findWithoutBothConditions(int seed, Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findWithoutBothConditions(seed, pageable);
-        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
-    }
 
     public Long getTotalFeedbackCount() {
         return feedbackRepository.count();
