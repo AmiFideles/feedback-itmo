@@ -13,4 +13,4 @@ accessTokenSecret: testAccessTokenSecret
 refreshTokenSecret: testRefreshTokenSecret
 accessTokenExpirationMinutes: 1
 refreshTokenExpirationDays: 2
-upload-dir: src/main/resources/static
+upload-dir: ${UPLOAD_DIR}
