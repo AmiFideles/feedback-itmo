@@ -25,7 +25,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       UPLOAD_DIR: ${UPLOAD_DIR}
     volumes:
-      - ./static:/app/static
+      - ../static:/app/static
       - ./backend/logs:/app/logs/
 
     networks:
