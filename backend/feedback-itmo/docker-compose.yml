@@ -25,6 +25,7 @@ services:
       UPLOAD_DIR: ${UPLOAD_DIR}
     volumes:
       - ../static:${UPLOAD_DIR}
+      - ./logs:/app/logs/
 
     networks:
       - itmo-network
