@@ -1,0 +1,7 @@
+target/
+postgres-data/
+logs/
+script/test.sh
+.idea
+*.iml
+.vscode

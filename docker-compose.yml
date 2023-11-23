@@ -7,13 +7,13 @@ services:
     networks:
       - itmo-network
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./backend/postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   app:
-    build: .
+    build: backend/
     ports:
       - "8080:8080"
     depends_on:
@@ -24,8 +24,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       UPLOAD_DIR: ${UPLOAD_DIR}
     volumes:
-      - ../static:${UPLOAD_DIR}
-      - ./logs:/app/logs/
+      - ./static:${UPLOAD_DIR}
+      - ./backend/logs:/app/logs/
 
     networks:
       - itmo-network
