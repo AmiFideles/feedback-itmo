@@ -30,7 +30,6 @@ public class WebSecurityConfig {
     private final UserDetailsServiceImpl userService;
     private final JwtHelper jwtHelper;
 
-    // TODO antMatcher может быть уже deprecated
     @Bean
     public SecurityFilterChain securityFilterChain(AccessTokenEntryPoint accessTokenEntryPoint, HttpSecurity httpSecurity) throws Exception {
         httpSecurity

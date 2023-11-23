@@ -17,6 +17,7 @@ import ru.niu.itmo.feedback.mapper.UserMapper;
 import ru.niu.itmo.feedback.repository.RefreshTokenRepository;
 import ru.niu.itmo.feedback.repository.UserRepository;
 import ru.niu.itmo.feedback.service.exceptions.InvalidRefreshTokenException;
+import ru.niu.itmo.feedback.service.exceptions.RefreshTokenNotFoundException;
 import ru.niu.itmo.feedback.service.exceptions.UserAlreadyExist;
 import ru.niu.itmo.feedback.service.exceptions.UserNotFoundException;
 
@@ -46,7 +47,6 @@ public class AuthenticationService {
         }
         userRepository.save(user);
         return generateTokenDto(user);
-        // TODO убрать user id? я его на фронте нигде не использую
 
     }
 
@@ -57,9 +57,6 @@ public class AuthenticationService {
         } else {
             throw new InvalidRefreshTokenException("Invalid refresh token");
         }
-        /* TODO переделать. что должно произойти вообще если на логоут приходит токен
-            который не сущестует в бд?
-        * */
     }
 
     @Transactional
@@ -93,8 +90,7 @@ public class AuthenticationService {
             User user = UserMapper.INSTANCE.toEntity(userDto);
             return generateTokenDto(user);
         } else {
-            throw new InvalidRefreshTokenException("Invalid refresh token");
-            // TODO надо вернуть другую ошибку RefreshTokenNotExist
+            throw new RefreshTokenNotFoundException("Refresh token does not exist");
         }
 
     }

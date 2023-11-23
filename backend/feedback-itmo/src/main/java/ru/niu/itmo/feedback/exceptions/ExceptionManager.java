@@ -25,6 +25,11 @@ public class ExceptionManager {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(e.getMessage()));
     }
 
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    public ResponseEntity<?> handleRefreshTokenNotFoundException(RefreshTokenNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(e.getMessage()));
+    }
+
     @ExceptionHandler(UserAlreadyExist.class)
     public ResponseEntity<?> handleUserAlreadyExist(UserAlreadyExist e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDto(e.getMessage()));
@@ -51,7 +56,7 @@ public class ExceptionManager {
     }
 
     @ExceptionHandler(FileStorageException.class)
-    public ResponseEntity<?> handleGenericException(Exception e) {
+    public ResponseEntity<?> handleGenericException(FileStorageException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDto(e.getMessage()));
     }
 }

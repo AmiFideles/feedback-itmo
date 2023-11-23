@@ -59,7 +59,6 @@ public class FeedbackService {
         return null;
     }
 
-    // TODO Обработка ошибок
     public void savePhoto(MultipartFile file, Long feedbackId) {
         Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new FeedbackNotFoundException("Feedback not found with ID: " + feedbackId));
         if (feedback.getPhotoUrl() != null) {
