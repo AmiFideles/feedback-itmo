@@ -33,7 +33,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(AccessTokenEntryPoint accessTokenEntryPoint, HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors().and()
+                .cors().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
