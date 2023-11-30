@@ -59,4 +59,10 @@ public class ExceptionManager {
     public ResponseEntity<?> handleGenericException(FileStorageException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDto(e.getMessage()));
     }
+
+
+    @ExceptionHandler(ColorNotFountException.class)
+    public ResponseEntity<?> handleColorException(ColorNotFountException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(e.getMessage()));
+    }
 }

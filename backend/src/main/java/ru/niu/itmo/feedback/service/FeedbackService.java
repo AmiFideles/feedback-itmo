@@ -11,14 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.niu.itmo.feedback.dto.request.FeedbackRequestDto;
 import ru.niu.itmo.feedback.dto.response.FeedbackResponseDto;
+import ru.niu.itmo.feedback.entity.Color;
 import ru.niu.itmo.feedback.entity.Feedback;
 import ru.niu.itmo.feedback.entity.FeedbackStatus;
 import ru.niu.itmo.feedback.mapper.FeedbackMapper;
 import ru.niu.itmo.feedback.mapper.FeedbackSpecifications;
+import ru.niu.itmo.feedback.repository.ColorRepository;
 import ru.niu.itmo.feedback.repository.FeedbackRepository;
-import ru.niu.itmo.feedback.service.exceptions.PhotoAlreadyExistsException;
+import ru.niu.itmo.feedback.service.exceptions.ColorNotFountException;
 import ru.niu.itmo.feedback.service.exceptions.FeedbackNotFoundException;
 import ru.niu.itmo.feedback.service.exceptions.FileStorageException;
+import ru.niu.itmo.feedback.service.exceptions.PhotoAlreadyExistsException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,13 +38,18 @@ import java.util.Optional;
 public class FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
-
+    @Autowired
+    private ColorRepository colorRepository;
 
     @Value("${upload-dir}")
     private String uploadDir;
 
+    @Transactional
     public Long saveFeedback(FeedbackRequestDto feedbackRequestDto) {
         Feedback feedback = FeedbackMapper.INSTANCE.fromRequestDtoToEntity(feedbackRequestDto);
+        Color color = colorRepository.findById(feedback.getColor().getId()).orElseThrow(() -> new ColorNotFountException("Color not found with id " + feedback.getColor().getId()));
+        if (!feedback.getColor().equals(color))
+            throw new ColorNotFountException("Color not found with this data " + feedback.getColor());
         feedback.setStatus(FeedbackStatus.NOT_MODERATED);
         feedback.setDateTime(LocalDateTime.now());
         Feedback savedFeedback = feedbackRepository.save(feedback);

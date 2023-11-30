@@ -29,5 +29,5 @@ public class FeedbackResponseDto {
     private String photoUrl;
     private String status;
     private LocalDateTime dateTime;
-
+    private ColorResponseDto colorResponseDto;
 }

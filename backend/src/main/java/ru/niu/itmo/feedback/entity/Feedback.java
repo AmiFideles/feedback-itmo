@@ -16,7 +16,7 @@ public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedback_generator")
-    @SequenceGenerator(name = "feedback_generator", initialValue = 100)
+    @SequenceGenerator(name = "feedback_generator", initialValue = 100, allocationSize = 1)
     private Long id;
 
     private String firstName;
@@ -44,6 +44,10 @@ public class Feedback {
     private FeedbackStatus status;
 
     private LocalDateTime dateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    private Color color;
 
     //    @Null(message = "Gratitude type is required")
 //    @Enumerated(EnumType.STRING)

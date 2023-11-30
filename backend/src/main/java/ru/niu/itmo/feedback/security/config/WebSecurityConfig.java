@@ -40,6 +40,7 @@ public class WebSecurityConfig {
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/feedback/**").permitAll()
                 .antMatchers("/api/moderator/**").hasAuthority("MODERATOR")
+                .antMatchers("/api/color/**").hasAuthority("MODERATOR")
                 .anyRequest().permitAll()
                 .and().addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint);
