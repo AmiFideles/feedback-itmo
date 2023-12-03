@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,12 +47,11 @@ public class FeedbackService {
 
     @Transactional
     public Long saveFeedback(FeedbackRequestDto feedbackRequestDto) {
+        Color color1 = colorRepository.findById(feedbackRequestDto.getColorId()).orElseThrow(() -> new ColorNotFountException("Color not found with id " + feedbackRequestDto.getColorId()));
         Feedback feedback = FeedbackMapper.INSTANCE.fromRequestDtoToEntity(feedbackRequestDto);
-        Color color = colorRepository.findById(feedback.getColor().getId()).orElseThrow(() -> new ColorNotFountException("Color not found with id " + feedback.getColor().getId()));
-        if (!feedback.getColor().equals(color))
-            throw new ColorNotFountException("Color not found with this data " + feedback.getColor());
+        feedback.setColor(color1);
         feedback.setStatus(FeedbackStatus.NOT_MODERATED);
-        feedback.setDateTime(LocalDateTime.now());
+        feedback.setDateTime(LocalDateTime.now(ZoneOffset.UTC));
         Feedback savedFeedback = feedbackRepository.save(feedback);
         return savedFeedback.getId();
     }

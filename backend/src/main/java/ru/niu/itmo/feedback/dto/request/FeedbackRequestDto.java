@@ -23,5 +23,5 @@ public class FeedbackRequestDto {
     private String messageText;
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
     private String mentorEmail;
-    private Color color;
+    private Integer colorId;
 }
