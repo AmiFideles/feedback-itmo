@@ -19,7 +19,7 @@ import static ru.niu.itmo.feedback.configuration.SwaggerConfiguration.BEARER_KEY
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/color")
+@RequestMapping("/api/color")
 public class ColorController {
     private final ColorService colorService;
 

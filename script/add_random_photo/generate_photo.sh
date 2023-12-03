@@ -29,8 +29,6 @@ const generateAndSendPhotos = async () => {
   for (let i = 100; i <= 1000; i++) {
     const feedbackId = i;
     const photoPath = `./photo/photo_${i}.jpg`; // Замените на путь, где будут сохраняться фотографии
-
-
     const response = await fetch('https://source.unsplash.com/random');
     const buffer = await response.buffer();
     fs.writeFileSync(photoPath, buffer);

@@ -3,7 +3,7 @@ services:
   database:
     image: postgres:alpine
     ports:
-      - "5433:5432"
+      - "5436:5432"
     networks:
       - itmo-network
     volumes:
