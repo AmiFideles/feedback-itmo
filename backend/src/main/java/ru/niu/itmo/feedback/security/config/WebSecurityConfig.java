@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -40,7 +41,9 @@ public class WebSecurityConfig {
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/feedback/**").permitAll()
                 .antMatchers("/api/moderator/**").hasAuthority("MODERATOR")
-                .antMatchers("/api/color/**").hasAuthority("MODERATOR")
+                .antMatchers(HttpMethod.POST, "/api/color/**").hasAuthority("MODERATOR")
+                .antMatchers(HttpMethod.GET, "/api/color/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().permitAll()
                 .and().addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint);

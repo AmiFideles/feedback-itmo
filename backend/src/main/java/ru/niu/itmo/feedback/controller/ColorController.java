@@ -35,12 +35,11 @@ public class ColorController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "get all color"
+    )
     @ApiResponse(responseCode = "401", description = "unauthorized")
     @ApiResponse(responseCode = "403", description = "access is denied")
-    @Operation(
-            summary = "Get all colors",
-            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)}
-    )
     @GetMapping
     public ResponseEntity<List<Color>> getAllColors() {
         List<Color> colors = colorService.getAllColors();
