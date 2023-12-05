@@ -18,16 +18,16 @@ public class FeedbackResponseDto {
     private String lastName;
     @NotNull(message = "Graduation year is required")
     private Integer graduationYear;
-    @NotNull(message = "Faculty must be null")
+    @NotNull(message = "Faculty cannot be null")
     private String faculty;
-    @NotNull(message = "Mentor name must be null")
+    @NotNull(message = "Mentor name cannot be null")
     private String mentorName;
-    @NotNull(message = "Message text must be null")
+    @NotNull(message = "Message text cannot be null")
     private String messageText;
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
     private String mentorEmail;
     private String photoUrl;
     private String status;
     private LocalDateTime dateTime;
-    private ColorResponseDto colorResponseDto;
+    private Integer colorId;
 }
