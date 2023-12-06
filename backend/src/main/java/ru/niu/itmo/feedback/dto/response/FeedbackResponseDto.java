@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 public class FeedbackResponseDto {
 
     private Long id;
+    @NotNull(message = "firstName id required")
     private String firstName;
     private String lastName;
     @NotNull(message = "Graduation year is required")
     private Integer graduationYear;
-    @NotNull(message = "Faculty cannot be null")
     private String faculty;
     @NotNull(message = "Mentor name cannot be null")
     private String mentorName;
@@ -29,5 +29,6 @@ public class FeedbackResponseDto {
     private String photoUrl;
     private String status;
     private LocalDateTime dateTime;
+    @NotNull(message = "colorId is required")
     private Integer colorId;
 }

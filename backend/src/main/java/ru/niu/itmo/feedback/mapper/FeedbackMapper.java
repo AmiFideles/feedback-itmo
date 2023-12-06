@@ -17,6 +17,7 @@ public interface FeedbackMapper {
     FeedbackMapper INSTANCE = Mappers.getMapper(FeedbackMapper.class);
 
     Feedback fromResponseDtoToEntity(FeedbackResponseDto feedbackResponseDto);
+
     @Mapping(source = "feedback.color", target = "colorId")
     FeedbackResponseDto toResponseDto(Feedback feedback);
 

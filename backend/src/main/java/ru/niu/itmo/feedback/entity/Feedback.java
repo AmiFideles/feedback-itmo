@@ -18,7 +18,7 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedback_generator")
     @SequenceGenerator(name = "feedback_generator", initialValue = 100, allocationSize = 1)
     private Long id;
-
+    @NotNull(message = "firstName id required")
     private String firstName;
 
     private String lastName;
@@ -26,13 +26,12 @@ public class Feedback {
     @NotNull(message = "Graduation year is required")
     private Integer graduationYear;
 
-    @NotNull(message = "Faculty must be null")
     private String faculty;
 
-    @NotNull(message = "Mentor name must be null")
+    @NotNull(message = "Mentor name is required")
     private String mentorName;
 
-    @NotNull(message = "Message text must be null")
+    @NotNull(message = "Message text is required")
     private String messageText;
 
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
