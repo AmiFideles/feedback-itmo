@@ -1,13 +1,13 @@
 <template>
     <div class="scroll-top" :showArr="showArr || null">
         <VButton @click="scrl">
-            <IScrollArr class="ico"/>
+            <ISСrollArr class="ico"/>
         </VButton>
     </div>
 </template>
 
 <script setup>
-    import IScrollArr from "@/components/icons/IScrollArr.vue";
+    import ISСrollArr from "@/components/icons/ISСrollArr.vue";
 
     import {onMounted, onUnmounted, ref} from "vue" 
 

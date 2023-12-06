@@ -44,7 +44,7 @@
 
     import LettersPag from "@/components/letter/LettersPag.vue";
 
-    import R from "@/stores/router.js"
+    import R from "@/stores/Router.js"
 
     import Moment from 'moment';
     import { extendMoment } from 'moment-range';
