@@ -1,12 +1,12 @@
 <template>
     <div class="sliderArrows">
-        <div class="arrow prev" @click="emit('prev')"><ISCrollArr/></div>
-        <div class="arrow next" @click="emit('next')"><ISCrollArr/></div>
+        <div class="arrow prev" @click="emit('prev')"><ISСrollArr/></div>
+        <div class="arrow next" @click="emit('next')"><ISСrollArr/></div>
     </div>
 </template>
 
 <script setup>
-    import ISCrollArr from "@/components/icons/ISCrollArr.vue";
+    import ISСrollArr from "@/components/icons/ISСrollArr.vue";
 
     const emit = defineEmits(['prev', 'next'])
 </script>

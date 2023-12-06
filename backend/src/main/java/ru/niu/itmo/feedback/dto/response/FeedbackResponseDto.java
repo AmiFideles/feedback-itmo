@@ -24,11 +24,11 @@ public class FeedbackResponseDto {
     private String mentorName;
     @NotNull(message = "Message text cannot be null")
     private String messageText;
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
+//    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
     private String mentorEmail;
     private String photoUrl;
     private String status;
     private LocalDateTime dateTime;
     @NotNull(message = "colorId is required")
-    private Integer colorId;
+    private Integer color;
 }

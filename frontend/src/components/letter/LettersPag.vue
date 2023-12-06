@@ -13,7 +13,7 @@
 <script setup>
     import LCard from "@/components/letter/LCard.vue";
 
-    import R from "@/stores/router.js";
+    import R from "@/stores/Router.js";
 
     import { feedbackAPI } from "@/script/api";
     
