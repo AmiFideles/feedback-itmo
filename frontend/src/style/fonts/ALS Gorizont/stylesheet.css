@@ -1,0 +1,26 @@
+@font-face{
+    font-family: "ALS Gorizont";
+    src: url("ALS Gorizont regular.eot");
+    src: url("ALS Gorizont regular.eot?#iefix")format("embedded-opentype"),
+        url("ALS Gorizont regular.woff")format("woff"),
+        url("ALS Gorizont regular.woff2")format("woff2"),
+        url("ALS Gorizont regular.ttf")format("truetype"),
+        url("ALS Gorizont regular.svg#ALS Gorizont Expanded Regular")format("svg");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face{
+    font-family: "ALS Gorizont";
+    src: url("ALS Gorizont extrabold.eot");
+    src: url("ALS Gorizont extrabold.eot?#iefix")format("embedded-opentype"),
+        url("ALS Gorizont extrabold.woff")format("woff"),
+        url("ALS Gorizont extrabold.woff2")format("woff2"),
+        url("ALS Gorizont extrabold.ttf")format("truetype"),
+        url("ALS Gorizont extrabold.svg#ALS Gorizont Expanded Regular")format("svg");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+

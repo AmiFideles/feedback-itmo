@@ -1,0 +1,22 @@
+:root{
+    --c-black: #202020;
+    --c-grey-dark: #8B8B8B;
+    --c-grey: #7D7D7D;
+    --c-white: #fff;
+    --c-white-T: #ffffff00;
+
+    --c-black-ST: rgba(20, 20, 20, 0.80);
+
+    --c-lime-hov: #DDFF82;
+    --c-lime-light: #D3FF5C;
+    --c-lime: #C7FD34;
+
+    --c-orange-hov: #FFE37D;
+    --c-orange-light: #F6DF89;
+    --c-orange: #FFAD34;
+
+    --c-err: #E22F2F;
+
+    --gr-background: linear-gradient(180deg, var(--c-lime) 0%, var(--c-orange) 100%);
+    --gr-fade: linear-gradient(0deg, var(--c-white) 0%, var(--c-white-T) 100%);
+}
