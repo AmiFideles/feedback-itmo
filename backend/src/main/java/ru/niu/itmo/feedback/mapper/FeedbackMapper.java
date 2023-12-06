@@ -16,11 +16,11 @@ import ru.niu.itmo.feedback.entity.FeedbackStatus;
 public interface FeedbackMapper {
     FeedbackMapper INSTANCE = Mappers.getMapper(FeedbackMapper.class);
 
-    Feedback fromResponseDtoToEntity(FeedbackResponseDto feedbackResponseDto);
 
-    @Mapping(source = "feedback.color", target = "colorId")
+    @Mapping(source = "feedback.color", target = "color")
     FeedbackResponseDto toResponseDto(Feedback feedback);
 
+    @Mapping(target = "color", ignore = true)
     Feedback fromRequestDtoToEntity(FeedbackRequestDto feedbackResponseDto);
 
     FeedbackRequestDto toRequestDto(Feedback feedback);

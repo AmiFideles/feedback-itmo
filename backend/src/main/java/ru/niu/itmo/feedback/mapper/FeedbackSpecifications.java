@@ -21,7 +21,7 @@ public class FeedbackSpecifications {
             predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("status"), FeedbackStatus.APPROVED));
 
             if (faculty != null) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("faculty"), faculty));
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("faculty"), faculty));
             }
 
             if (graduationYear != null) {

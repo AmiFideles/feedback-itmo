@@ -47,7 +47,7 @@ public class FeedbackService {
 
     @Transactional
     public Long saveFeedback(FeedbackRequestDto feedbackRequestDto) {
-        Color color1 = colorRepository.findById(feedbackRequestDto.getColorId()).orElseThrow(() -> new ColorNotFountException("Color not found with id " + feedbackRequestDto.getColorId()));
+        Color color1 = colorRepository.findById(feedbackRequestDto.getColor()).orElseThrow(() -> new ColorNotFountException("Color not found with id " + feedbackRequestDto.getColor()));
         Feedback feedback = FeedbackMapper.INSTANCE.fromRequestDtoToEntity(feedbackRequestDto);
         feedback.setColor(color1);
         feedback.setStatus(FeedbackStatus.NOT_MODERATED);
