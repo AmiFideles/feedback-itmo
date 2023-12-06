@@ -19,6 +19,9 @@ export default defineStore("R", ()=>{
     const history = computed(()=>router.options.history.state);
 
     const pushQuery = (q)=>{
+        // console.log(q);
+        // console.trace();
+
         let res = Object.assign(
             {},
             query.value,

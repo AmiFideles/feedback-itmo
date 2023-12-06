@@ -56,7 +56,7 @@
 
 // list
     const loop = ref(false);
-    const offset = ref(0);
+    const offset = ref(1);
 
     const updateList = async (v=1)=>{
         let res = await feedbackAPI.getList(offset.value, 15, R().parseQuery('filters'));
@@ -65,12 +65,17 @@
 
         offset.value++;
 
-        if(res.totalPages <= offset.value || !list || !list.length){
+        if(
+            res.totalPages < offset.value || 
+            !list || 
+            !list.length
+        ){
             loop.value = true;
-            return;
+            return false;
         }
 
         idList.value[v == 1?'push':'unshift'](...res.content.map(e => e.id+""));
+        return true;
     }
 
 // info
@@ -117,6 +122,9 @@
                 modal.value.call();
                 updateInfo();
 
+                loop.value = false;
+                offset.value = 1;
+
                 if(R().query?.larr){
                     idList.value = R().query.larr.split(';');
                     R().pushQuery({l: n, larr: null});
@@ -137,13 +145,18 @@
 
         if(loop.value){
             R().pushQuery({l: idList.value[v == 1?0:idList.value.length -1]});
+            if(idList.value.length == 1)updateInfo();
             return;
         }
 
         let localId = idList.value.indexOf(id.value);
 
-        if(localId+v == -1 || localId+v == idList.value.length)
-            await updateList(v);
+        if(localId+v == -1 || localId+v == idList.value.length){
+            if(!await updateList(v)){
+                updateInfo();
+                return;
+            }
+        }
 
         localId = idList.value.indexOf(id.value);
 

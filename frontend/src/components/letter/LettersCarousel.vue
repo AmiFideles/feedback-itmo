@@ -49,13 +49,12 @@
 
         offset.value++;
 
-        if(res.totalPages <= offset.value || !l || !l.length){
+        list.value.push(...l);
+
+        if(res.totalPages < offset.value || !l || !l.length){
             stop.value = true;
             return;
         }
-
-        list.value.push(...l);
-        console.log(list.value);
     }
 
     onMounted(paginate);

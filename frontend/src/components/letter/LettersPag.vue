@@ -47,8 +47,6 @@
     const paginate = async ()=>{
         err.value = '';
 
-        console.log(R().parseQuery('filters'));
-
         let res = await feedbackAPI.getList(
             offset.value,
             15,
@@ -65,13 +63,13 @@
         }
 
         offset.value++;
+        list.value.push(...res.content);
 
         if(res.totalPages <= offset.value){
             stop.value = true;
             return;
         }
-
-        list.value.push(...res.content);        
+       
         setTimeout(()=>{
             pause.value = false;
             checkPag();
