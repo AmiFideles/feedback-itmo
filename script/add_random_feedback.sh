@@ -13,7 +13,7 @@ for i in {1..1000}; do
   COLOR_ID=$((1 + RANDOM % 4))  # Генерация случайного значения colorId от 1 до 4
 
   # Создание JSON-строки с данными, включая значение colorId
-  DATA="{\"firstName\":\"$FIRST_NAME\",\"lastName\":\"$LAST_NAME\",\"graduationYear\":$GRADUATION_YEAR,\"faculty\":\"$FACULTY\",\"mentorName\":\"$MENTOR_NAME\",\"messageText\":\"$MESSAGE_TEXT\",\"mentorEmail\":\"$MENTOR_EMAIL\",\"colorId\":$COLOR_ID}"
+  DATA="{\"firstName\":\"$FIRST_NAME\",\"lastName\":\"$LAST_NAME\",\"graduationYear\":$GRADUATION_YEAR,\"faculty\":\"$FACULTY\",\"mentorName\":\"$MENTOR_NAME\",\"messageText\":\"$MESSAGE_TEXT\",\"mentorEmail\":\"$MENTOR_EMAIL\",\"color\":$COLOR_ID}"
 
   # Отправка запроса с использованием cURL
   curl -s -X POST -H "Content-Type: application/json" -d "$DATA" "$API_ENDPOINT"

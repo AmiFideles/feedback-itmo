@@ -30,8 +30,7 @@ public class Feedback {
     @NotNull(message = "Mentor name is required")
     private String mentorName;
 
-    @Lob
-    @NotNull(message = "Message text is required")
+    @Column(columnDefinition = "text")
     private String messageText;
 
     //    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
