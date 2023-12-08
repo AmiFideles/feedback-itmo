@@ -1,6 +1,7 @@
 package ru.niu.itmo.feedback.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.niu.itmo.feedback.dto.SiteReviewDto;
 import ru.niu.itmo.feedback.service.SiteReviewService;
+
+import static ru.niu.itmo.feedback.configuration.SwaggerConfiguration.BEARER_KEY_SECURITY_SCHEME;
 
 /**
  * @author amifideles
@@ -26,7 +29,7 @@ public class SiteReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Get websites reviews")
+    @Operation(summary = "Get websites reviews", security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping
     public ResponseEntity<Page<SiteReviewDto>> getAllSiteReviews(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         Page<SiteReviewDto> allSiteReviews = siteReviewService.getAllSiteReviews(pageable);
