@@ -43,6 +43,8 @@ public class WebSecurityConfig {
                 .antMatchers("/api/moderator/**").hasAuthority("MODERATOR")
                 .antMatchers(HttpMethod.POST, "/api/color/**").hasAuthority("MODERATOR")
                 .antMatchers(HttpMethod.GET, "/api/color/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/site-review/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/site-review/**").hasAuthority("MODERATOR")
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().permitAll()
                 .and().addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class)
