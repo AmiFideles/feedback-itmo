@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Setter
 public class AuthDto {
     @NotBlank
-    @Size(min = 3, max = 30)
+    @Size(min = 6, max = 30)
     private String username;
     @NotBlank
     @Size(min = 6, max = 60)

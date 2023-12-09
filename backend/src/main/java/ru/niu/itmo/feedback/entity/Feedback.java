@@ -1,10 +1,9 @@
 package ru.niu.itmo.feedback.entity;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import lombok.Data;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -31,10 +30,10 @@ public class Feedback {
     @NotNull(message = "Mentor name is required")
     private String mentorName;
 
-    @NotNull(message = "Message text is required")
+    @Column(columnDefinition = "text")
     private String messageText;
 
-//    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
+    //    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", message = "Invalid email format")
     private String mentorEmail;
 
     private String photoUrl;

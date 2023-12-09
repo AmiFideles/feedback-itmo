@@ -29,5 +29,16 @@ services:
       - ./backend/logs:/app/logs/
     networks:
       - itmo-network
+  frontend:
+    build:
+      context: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    volumes:
+      - ../static:/usr/share/nginx/html/static
+    networks:
+      - itmo-network
 networks:
   itmo-network:
