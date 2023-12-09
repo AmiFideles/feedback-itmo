@@ -31,6 +31,7 @@
                     }"
                 >Оставить послание</VButton>
                 <SliderArrows
+                    no-shrink
                     @next="move(1)"
                     @prev="move(-1)"
                 />
@@ -105,7 +106,7 @@
             }
         );
 
-        currentColor.value = Static().getColor(info.value?.colorId || 1)
+        currentColor.value = Static().getColor(info.value?.color || 1)
 
         setTimeout(()=>fade.value = false);
     }
@@ -254,6 +255,20 @@
 
         &:not([show]){
             opacity: 0;
+        }
+    }
+
+    @media (max-width: $mobile-big){
+        .slider-arrows{
+            :deep(.arrow){
+                &.prev{
+                    right: calc(100% - 1rem);
+                }
+
+                &.next{
+                    left: calc(100% - 1rem);
+                }
+            }
         }
     }
 

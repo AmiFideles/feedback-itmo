@@ -3,14 +3,14 @@
         
         <div class="intro">
             <h1>
-                АКЦИЯ УНИВЕРСИТЕТА&nbsp;ИТМО
-                В&nbsp;ЧЕСТЬ ГОДА ПЕДАГОГА 
-                И&nbsp;НАСТАВНИКА
+                <h1>
+                    &laquo;Нет на&nbsp;свете излишества прекраснее, чем излишек благодарности&raquo;<br><br>
+                    &mdash;&nbsp;Жан Де&nbsp;Лебрюйер
+                </h1>
             </h1>
         </div>
 
         <div class="sprite-wr">
-            <div class="test"></div>
             <div class="sprite-wr-wr">
                 <img class="sprite" src="./lighthouse.svg" alt="">
                 <div class="spark"></div>
@@ -39,7 +39,7 @@
             position: absolute;
             right: calc(var(--generic-padding) * 2);
             bottom: calc(5%);
-            height: calc(70%);
+            height: calc(90% - 18rem);
 
             --period: 10s;
 
@@ -121,18 +121,61 @@
 
         .intro{
             width: 100%;
-            max-width: 852px;
+            max-width: calc(85.2rem + 32vh);
             font-weight: 700;
             height: 100%;
             @include flex-c;
             padding-bottom: 5.2rem;
             position: relative;
             z-index: 1;
+            padding-right: 32vh;
         }
 
         .ribbons{
             height: 6.2rem;
             position: absolute;
+        }
+
+        @media (max-width: $pad) {
+            height: 100vh;
+
+            h1{
+                font-size: 4.4rem;
+            }
+        }
+
+        @media (max-width: $mobile-big) {
+            height: auto;
+
+            h1{
+                font-size: 3.2rem;
+            }
+
+            .sprite-wr{
+                height: calc(100% - var(--generic-padding) * 2 - 5.2rem);
+            }
+
+            .intro{
+                padding-top: 7.7rem;
+                padding-bottom: 7.7rem;
+                padding-right: 30%;
+            }
+        }
+
+        @media (max-width: $mobile-med) {
+            h1{
+                font-size: 2.4rem;
+            }
+
+            .sprite-wr{
+                height: 20rem;
+            }
+
+            .intro{
+                max-width: unset;
+                padding: 7.7rem 0;
+                padding-bottom: calc(7.7rem + 20rem);
+            }
         }
     }
 </style>

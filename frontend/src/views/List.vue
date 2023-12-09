@@ -124,4 +124,43 @@
             }
         }
     }
+
+    @media (max-width: $pad){
+        .filters-wr{
+            .filters-wr-wr{
+                padding-top: var(--generic-padding);
+            }
+            
+            .filters-wr-wr, .filters{
+                flex-direction: column;
+                gap: 1.8rem;
+            }
+
+            :deep(.filters :is(.input-wr, .select)), p{
+                text-align: start;
+            }
+
+            .filters{
+                gap: .8rem;
+                width: 100%;
+
+                .faculty-select{
+                    width: 100%;
+                }
+                .year-select{
+                    width: 100%;
+                }
+            }
+        }
+
+        .letters-wr{
+            padding-top: var(--generic-padding);
+        }
+    }
+
+    @media (max-width: $mobile-big){
+        :deep(.filters :is(.input-wr, .select)), p{
+            font-size: 2rem!important;
+        }
+    }
 </style>

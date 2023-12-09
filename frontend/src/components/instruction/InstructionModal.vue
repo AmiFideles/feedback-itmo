@@ -68,4 +68,12 @@
         gap: 1.2rem;
     }
 
+    @media (max-width: $mobile-med){
+        .btns{
+            .btn, a{
+                width: 100%;
+            }
+        }
+    }
+
 </style>

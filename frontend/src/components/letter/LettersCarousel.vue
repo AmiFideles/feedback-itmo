@@ -3,7 +3,8 @@
         <Carousel 
             class="carousel"
 
-            :items-to-show="3"
+            :items-to-show="1"
+            :breakpoints="breakpoints"
             v-model="slideId"
             ref="carRef"
         >
@@ -55,6 +56,19 @@
             stop.value = true;
             return;
         }
+    }
+
+    const breakpoints = {
+        // 700px and up
+        1060: {
+            itemsToShow: 3,            
+            snapAlign: 'center',
+        },
+        // 1024 and up
+        800: {
+            itemsToShow: 2,
+            snapAlign: 'start',
+        },
     }
 
     onMounted(paginate);

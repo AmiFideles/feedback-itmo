@@ -129,7 +129,7 @@
             //     name: {title: "Ваши имя и фамилия", value: "Test Boy"},
             //     graduationYear: {title: "Ваши имя и фамилия", value: years.value[0], list: years.value},
             //     faculty: {title: "Ваше подразделение в ИТМО", value: "Test_Fac"},
-            //     mentorName: {title: "Имя и фамилия наставника", value: "Testor"},
+            //     mentorName: {title: "Имя и фамилия наставника", value: "Testor 1"},
             //     mentorEmail: {title: "Email наставника", value: ""},
             //     messageText: {title: "Текст послания", value: "Test\n\nText\n\nBoy"},
             //     prompt: {title: "Выберите послание", value: prompts.value[1], list: prompts},
@@ -312,6 +312,23 @@
 
         &:not([show]){
             @include hidden(1rem);
+        }
+    }
+
+    @media (max-width: $mobile-med){
+        .controls,
+        .success-controls{
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .controls .colors{
+            margin-bottom: 1rem;
+
+            .color{
+                height: 2.4rem;
+                width: 2.4rem;
+            }
         }
     }
 </style>

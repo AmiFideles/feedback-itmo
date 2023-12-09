@@ -19,6 +19,10 @@ html{
     --generic-padding: 7.4rem;
 
     background: var(--c-lime);
+
+    @media (max-width: $mobile-big){
+        --generic-padding: 3.2rem;
+    }
 }
 
 body{
@@ -101,6 +105,10 @@ ul{
 
     &:first-child{
         padding-top: calc(12.8rem + 5.2rem);
+
+        @media (max-width: $mobile-big){
+            padding-top: calc(var(--generic-padding) + 5.2rem);
+        }
     }
 }
 

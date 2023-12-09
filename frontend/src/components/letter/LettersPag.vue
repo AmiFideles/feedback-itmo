@@ -105,11 +105,13 @@
             width: 100%;
         }
 
-        @media screen and (max-width: 1000px) {
+        @media screen and (max-width: $pad) {
             grid-template-columns: repeat(2, 1fr);
+
+            gap: var(--generic-padding);
         }
 
-        @media screen and (max-width: 660px) {
+        @media screen and (max-width: $mobile-med) {
             grid-template-columns: repeat(1, 1fr);
         }
     }
@@ -131,4 +133,7 @@
     p[err]{
         padding: 0 4.8rem;
     }
+
+
+
 </style>

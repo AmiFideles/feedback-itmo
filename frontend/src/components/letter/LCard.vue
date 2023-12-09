@@ -1,5 +1,5 @@
 <template>
-    <div class="card" v-if="info" :style="{'--sh': Static().getColor(info.colorId || 1)?.color}">
+    <div class="card" v-if="info" :style="{'--sh': Static().getColor(info.color || 1)?.color}">
         <div class="title">
             <p>{{info.mentorName}}</p>
         </div>

@@ -115,11 +115,24 @@
         }
 
         &:not([show]){
-            pointer-events: none;
-            opacity: 0;
+            @include hidden(0);
             
             .container-wr{
                 @include hidden-hor(10rem)
+            }
+        }
+
+        @media (max-width: $mobile-big){
+            --pad: calc(var(--generic-padding) * 1.7);
+
+            .container-wr{
+                border-radius: 0 0 2.5rem 2.5rem;
+            }
+
+            &:not([show]){
+                .container-wr{
+                    @include hidden(-10rem)
+                }
             }
         }
     }
