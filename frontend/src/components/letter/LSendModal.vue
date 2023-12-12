@@ -14,10 +14,12 @@
 
         <div class="rel-wr">
             <div class="success" :show="success || null">
-                <h3>Ваше послание успешно отравлено!</h3>
+                <h3>Спасибо!</h3>
+                <h3>Ваше послание будет опубликовано после модерации</h3>
             </div>
             <div class="form" :show="!success || null">
                 <div class="inp-wr" v-for="(i,k) in data" :key="k">
+                    <div class="title">{{i.title}}</div>
                     <textarea 
                         v-if="k == 'messageText'" 
                         :placeholder="i.title" 
@@ -116,7 +118,7 @@
             success.value = false;
             data.value = {
                 name: {title: "Ваши имя и фамилия", value: ""},
-                graduationYear: {title: "Ваши имя и фамилия", value: years.value[0], list: years.value},
+                graduationYear: {title: "Год выпуска", value: years.value[0], list: years.value},
                 faculty: {title: "Ваше подразделение в ИТМО", value: ""},
                 mentorName: {title: "Имя и фамилия наставника", value: ""},
                 mentorEmail: {title: "Email наставника", value: ""},
@@ -286,6 +288,22 @@
 //success
     .rel-wr{
         position: relative;
+    }
+
+    .inp-wr{
+        .title{
+            font-size: 1.4rem;
+            color: var(--c-grey-dark);
+            margin-bottom: .6rem;
+        }
+    }
+
+    .success{
+        flex-direction: column;
+
+        h3{
+            max-width: 40rem;
+        }
     }
 
     .success, 

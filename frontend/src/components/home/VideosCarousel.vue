@@ -4,13 +4,14 @@
             class="carousel"
 
             :items-to-show="1"
-            :wrap-around="true"
+            :wrap-around="false"
             v-model="slideId"
             ref="carRef"
         >
            <Slide class="slide" v-for="(i,k) in links" :key="k">
                 <div class="vid-wr">
-                    <iframe :src="i" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <VLoading class="loader"/>
+                    <YoutubeVue3 v-if="slideId == k" :ref="e => i.ref = e" :videoid="i.id"/>
                 </div>
            </Slide>
         </Carousel>
@@ -19,6 +20,11 @@
             @prev="carRef.prev()" 
             @next="carRef.next()"
         />
+
+        <!-- <div class="vid-wr">
+            <YoutubeVue3 :ref="e => ytRefs[0] = e" :videoid="links[0].id"/>
+        </div>
+        <VButton @click="ytRefs[0]?.player?.stopVideo()">SUS</VButton> -->
     </div>
 </template>
 
@@ -26,24 +32,43 @@
     import 'vue3-carousel/dist/carousel.css'
     import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
+    import { YoutubeVue3 } from 'youtube-vue3'
+
     import SliderArrows from "@/components/ui/SliderArrows.vue";
     
-    import { ref } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
 
     const carRef = ref();
 
     const slideId = ref(0);
 
     const links = ref([
-        'https://www.youtube.com/embed/GPoZUPrzm0k',
-        'https://www.youtube.com/embed/5gd13Bh2oM4',
-        'https://www.youtube.com/embed/AVQTYN4gFzw',
-        'https://www.youtube.com/embed/SUinKbTo6UI',
-        'https://www.youtube.com/embed/8hTIX4Srgp8',
-        'https://www.youtube.com/embed/ziPX84XTsn0',
-        'https://www.youtube.com/embed/PPiYcaDAN7Y',
-        'https://www.youtube.com/embed/JOtGnkPmuaM',
-    ])
+        {id: 'GPoZUPrzm0k'},
+        {id: '5gd13Bh2oM4'},
+        {id: 'AVQTYN4gFzw'},
+        {id: 'SUinKbTo6UI'},
+        {id: '8hTIX4Srgp8'},
+        {id: 'ziPX84XTsn0'},
+        {id: 'PPiYcaDAN7Y'},
+        {id: 'JOtGnkPmuaM'},
+        {id: '8VHXc6IZGLc'},
+    ]
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+    )
+
+    const stopAll = ()=>{
+        links.value.forEach(e => {
+            e.ref?.player?.stopVideo()
+        });
+    }
+
+    watch(slideId, stopAll);
+
+    onMounted(()=>{
+        setTimeout(stopAll);
+    })
 </script>
 
 <style lang="scss" scoped>
@@ -58,20 +83,29 @@
         --w: 60rem;
 
         .vid-wr{
+            position: relative;
             width: 60rem;
             height: calc(var(--w) * 0.53333);
             background: var(--c-white);
             border-radius: 2.5rem;
             overflow: hidden;
 
-            iframe{
+            :deep(iframe){
+                position: relative;
                 height: 100%;
                 width: 100%;
+                z-index: 1;
             }
         }
     }
 
-    
+    .loader{
+        height: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
 
     @media (max-width: $mobile-med){
         .carousel-wr{

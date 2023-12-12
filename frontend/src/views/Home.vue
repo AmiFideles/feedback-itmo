@@ -11,7 +11,7 @@
 
         <div class="about cas-wr">
             <p>
-                В&nbsp;год педагога и&nbsp;наставника хочется сказать спасибо всем, кто однажды вдохновил, поддержал, поверил, направил, вовремя оказался рядом. Мы&nbsp;точно знаем, что успех каждого человека&nbsp;&mdash; это его усилия, труд и&nbsp;вовремя полученный ценный совет
+                Мы&nbsp;точно знаем, что успех каждого человека&nbsp;&mdash; это его усилия, труд и&nbsp;вовремя полученный ценный совет. Вспомните того, кто однажды вдохновил, поддержал, поверил, оказался рядом&nbsp;&mdash; вашего преподавателя, наставника, коллегу. Быть признательным и&nbsp;не&nbsp;бояться рассказать об&nbsp;этом всему миру&nbsp;&mdash; это стиль жизни <a href="https://be.itmo.ru/">Университета счастья</a>. Присоединяйтесь, be&nbsp;ITMO!
             </p>
         </div>
 
@@ -26,7 +26,7 @@
         
         <div class="about cas-wr">
             <p>
-                Поделитесь с&nbsp;нами невероятными историями о&nbsp;ваших наставниках, напишите несколько слов благодарности, расскажите о&nbsp;том, кто стал для вас маяком, указавшим путь в&nbsp;большом плавании жизни
+                Поделитесь с&nbsp;нами историями о&nbsp;ваших наставниках, напишите несколько слов благодарности, расскажите о&nbsp;том, кто стал для вас маяком, указавшим путь в&nbsp;большом плавании жизни
             </p>
             <VButton big @click="R().pushQuery({lsend: 'true'})">Оставить послание</VButton>
         </div>
@@ -36,6 +36,15 @@
                 Видеоинтервью с&nbsp;преподавателями, менторами, адаптерами и&nbsp;эдвайзерами ИТМО
             </p>
             <VideosCarousel/>
+        </div>
+
+        <div class="team about cas-wr">
+            <p>Команда проекта</p>
+            <div class="team-wr">
+                <a :href="i.href" class="sh-link" v-for="(i,k) in team" :key="k" target="_blank">
+                    <img :src="i.img" alt="" :style="{height: i.h}">
+                </a>
+            </div>
         </div>
 
 
@@ -48,6 +57,15 @@
     import VideosCarousel from "@/components/home/VideosCarousel.vue";
 
     import R from "@/stores/Router.js";
+    
+    import { computed, ref } from "vue";
+
+    const team = computed(() => [
+        {href: "https://be.itmo.ru/", img: "/img/team/0.png", h: "8.7rem"},
+        {href: "https://alumni.itmo.ru/", img: "/img/team/1.png", h: "8.7rem"},
+        {href: "https://news.itmo.ru/ru/university_live/social_activity/news/13259/", img: "/img/team/2.png", h: "3.5rem"},
+        {href: "https://expert.itmo.ru/", img: "/img/team/3.png", h: "3.5rem"},
+    ]);
 </script>
 
 <style lang="scss" scoped>
@@ -70,6 +88,14 @@
         p{
             font-size: 3.2rem;
             text-align: center;
+        }
+
+        a{
+            text-decoration: underline;
+        }
+
+        a:hover{
+            text-decoration: none;
         }
     }
 
@@ -97,6 +123,18 @@
         }
     }
 
+    .team{
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        &-wr{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.6rem 6.6rem;
+        }
+    }
+
     @media (max-width: $mobile-big){
         .page-wr, .about{
             gap: 4.8rem;
@@ -109,6 +147,14 @@
 
         .btn{
             font-size: 1.6rem!important;
+        }
+
+        .team{
+            flex-direction: column;
+
+            &-wr{
+                justify-content: center;
+            }
         }
     }
 </style>

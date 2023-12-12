@@ -54,6 +54,7 @@
         display: flex;
         align-items: center;
         position: relative;
+        overflow: hidden;
 
         input{
             padding: 1.072em 1.714em;

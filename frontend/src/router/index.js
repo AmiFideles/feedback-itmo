@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue';
 import List from '@/views/List.vue';
 
+import Admin from '@/views/Admin.vue';
+
 const routes = [
     {
         path: '/',
@@ -13,6 +15,12 @@ const routes = [
         path: '/list',
         name: 'List',
         component: List
+    },
+    {
+        path: '/admin',
+        name: 'Admin',
+        component: Admin,
+        meta: {admin: true}
     },
 ]
 
