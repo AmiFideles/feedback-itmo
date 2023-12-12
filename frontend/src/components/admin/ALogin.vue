@@ -3,9 +3,9 @@
         <div class="form cas-wr">
             <h2>Вход в систему</h2>
             <div class="title">Логин</div>
-            <VTextInput v-model="data.username"/>
+            <VTextInput v-model="data.username" @keydown.enter="passwInp.focus()"/>
             <div class="title">Пароль</div>
-            <VTextInput type="password" v-model="data.password"/>
+            <VTextInput type="password" v-model="data.password" ref="passwInp" @keydown.enter="login"/>
             <VErr :err="err"/>
             <VButton @click="login" :loading="loading || null">Войти</VButton>
         </div>
@@ -20,6 +20,7 @@
         username: "",
         password: ""
     })
+    const passwInp = ref();
 
     const loading = ref(false);
     const err = ref();
@@ -32,6 +33,8 @@
                         data.value.username,
                         data.value.password
                     );
+        err.value = err.value?.message;
+
         loading.value = false;
     }
 

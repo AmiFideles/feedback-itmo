@@ -5,6 +5,8 @@ import A from "@/stores/Admin.js";
 
 const api = import.meta.env.VITE_API;
 
+let prevStatus = null;
+
 export const sendAPI = (method, url, data, options)=>{
     if(data && data.token != null)data.token = getCookie('token');
 
@@ -24,19 +26,23 @@ export const sendAPI = (method, url, data, options)=>{
 
     return new Promise(async (resolve, reject)=>{
         await axios(body).then(
-            (res)=>resolve(res.data)
+            (res)=>{
+                prevStatus = res.status;
+                resolve(res.data)
+            }
         ).catch(
             async (err)=>{
+                prevStatus = err?.response?.status;
                 if(err?.response?.status == 401){
-                    if(err?.response?.data?.message === "Invalid refresh token"){
+                    if(err?.response?.data?.error != "Unauthorized" || prevStatus == 401){
                         A().exit();
                         reject(err.response.data || err);
                         return;
                     }
                     await A().refresh();
-                    return sendAPI(method, url, data, options);
+                    resolve(await sendAPI(method, url, data, options));
                 }
-                reject(err.response.data || err);
+                reject(err.response?.data || err);
             }
         );
     })

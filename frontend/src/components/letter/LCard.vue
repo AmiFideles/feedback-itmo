@@ -7,6 +7,15 @@
             <p>{{info.messageText}}</p>
         </div>
         <div class="link">
+            <div class="btns" v-if="admin">
+                <VButton class="REJECT" @click="setStatus('REJECTED')" :active="info?.status == 'REJECTED' || null" :loading="loading || null">
+                    ╳
+                </VButton>
+                <VButton class="APPROVE" @click="setStatus('APPROVED')" :active="info?.status == 'APPROVED' || null" :loading="loading || null">
+                    ✓
+                </VButton>
+            </div>
+            <div class="spacer" v-else></div>
             <a class="sh-link" @click="go">Читать полностью</a>
         </div>
     </div>
@@ -16,18 +25,41 @@
     import R from "@/stores/Router.js";
     import Static from "@/stores/Static.js";
     
-    import { computed } from "vue";
+    import { computed, ref } from "vue";
+    import { feedbackAPI } from "@/script/api/";
 
     const props = defineProps({
         info: Object,
-        list: Array
+        list: Array,
+        offset: Number,
+        admin: Boolean
     })
+
+//admin
+    const loading = ref();
+    const controlsErr = ref();
+
+    const setStatus = async (status)=>{
+        loading.value = true;
+        controlsErr.value = '';
+
+        await feedbackAPI
+            .setStatus(props.info.id, status)
+            .catch(error => controlsErr.value = error.message || error);
+        
+        if(!controlsErr.value){
+            props.info.status = status;
+        }
+
+        loading.value = false;
+    }
 
     const go = ()=>{
         R().pushQuery(
             Object.assign(
-                {l: props.info.id},
-                {larr: (props.list || []).map(e => e.id).join(';')}
+                {[props.admin?'lAdmin':'l']: props.info.id},
+                {larr: (props.list || []).map(e => e.id).join(';')},
+                {offset: props.offset}
             )
         );
     }
@@ -83,11 +115,47 @@
 
         .link{
             display: flex;
-            justify-content: end;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: .8rem;
 
             a{
                 color: var(--c-grey);
                 --sh-color: var(--sh)
+            }
+
+            .btns{
+                display: flex;
+                gap: .8rem;
+
+                .btn{
+                    padding: 0;
+                    width: 2.2rem;
+                    height: 2.2rem;
+                    border-radius: 50%;
+
+                    font-size: .8rem;
+                    
+                    --color: transparent;
+
+                    border: .1rem solid var(--color);
+
+                    background: transparent;
+
+                    &[active]{
+                        background: var(--color);
+                    }
+
+                    &.REJECT{
+                        --color: #ff4642;
+                        font-weight: 600;
+                    }
+                    &.APPROVE{
+                        --color: #adff59;
+                        font-size: 1.4rem;
+                    }
+                }
             }
         }
     }

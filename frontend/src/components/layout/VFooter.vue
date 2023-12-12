@@ -4,7 +4,8 @@
             <div class="links">
                 <div class="container">
                     <div class="logo"><ILogo /></div>
-                    <div>Программа развития ИТМО 2023</div>
+                    <a href="https://2030.itmo.ru/" target="_blank">Программа развития ИТМО 2030</a>
+                    <a href="https://itmo.ru/ru/viewunit/58950/departament_obrazovatelnoy_deyatelnosti.htm" target="_blank">Департамент образовательной деятельности</a>
                     <div>Разработка &copy;&nbsp;2023</div>
                     <div>Информация &copy;&nbsp;Университет ИТМО </div>
                 </div>

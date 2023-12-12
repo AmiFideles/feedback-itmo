@@ -44,7 +44,7 @@
     const offset = ref(0);
 
     const paginate = async ()=>{
-        let res = await feedbackAPI.getList(offset.value, 9);
+        let res = await feedbackAPI.getList('approved', offset.value, 9);
 
         let l = res.content;
 

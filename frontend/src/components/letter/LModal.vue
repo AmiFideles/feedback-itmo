@@ -21,15 +21,26 @@
                 <p>{{err || info?.messageText}}</p>
             </div>
         </div>
+        <VErr :err="controlsErr"/>
         <div class="controls-wr">
             <div class="controls">
-                <VButton 
-                    @click="R().pushQuery({lsend: 'true'})"
-                    :style="{
-                        '--bg': currentColor?.color,
-                        '--hov': currentColor?.light
-                    }"
-                >Оставить послание</VButton>
+                <div class="btns" v-if="isAdmin">
+                    <VButton class="REJECT" @click="setStatus('REJECTED')" :active="info?.status == 'REJECTED' || null" :loading="loading || null">
+                        ╳
+                    </VButton>
+                    <VButton class="APPROVE" @click="setStatus('APPROVED')" :active="info?.status == 'APPROVED' || null" :loading="loading || null">
+                        ✓
+                    </VButton>
+                </div>
+                <template v-else>
+                    <VButton 
+                        @click="R().pushQuery({lsend: 'true'})"
+                        :style="{
+                            '--bg': currentColor?.color,
+                            '--hov': currentColor?.light
+                        }"
+                    >Оставить послание</VButton>
+                </template>
                 <SliderArrows
                     no-shrink
                     @next="move(1)"
@@ -41,7 +52,7 @@
 </template>
 
 <script setup>
-    import { computed, ref, watch } from 'vue';
+    import { computed, onMounted, ref, watch } from 'vue';
     import SliderArrows from "@/components/ui/SliderArrows.vue";
 
     import R from "@/stores/Router.js";
@@ -53,29 +64,45 @@
 
     const idList = ref([]);
 
-    const id = computed(()=>R().query?.l);
+    const id = computed(()=>R().query?.l || R().query?.lAdmin);
+
+    const isAdmin = computed(()=>!! R().query?.lAdmin);
 
 // list
     const loop = ref(false);
-    const offset = ref(1);
+    const offset = ref(0);
 
     const updateList = async (v=1)=>{
-        let res = await feedbackAPI.getList(offset.value, 15, R().parseQuery('filters'));
+        let res = await feedbackAPI.getList(
+            !isAdmin.value?
+                'approved':
+            R().route.name == 'AAllList'?
+                'all':
+                'notModerated',
+            offset.value, 
+            15, 
+            R().parseQuery('filters')
+        );
 
         let list = res.content;
 
         offset.value++;
 
+        console.log(res);
+
         if(
             res.totalPages < offset.value || 
             !list || 
-            !list.length
+            !list.length ||
+            (offset == 1 && idList.length == 1 && list.length == 1)
         ){
+            console.log('loop');
             loop.value = true;
             return false;
         }
 
         idList.value[v == 1?'push':'unshift'](...res.content.map(e => e.id+""));
+        idList.value = [...new Set(idList.value)]
         return true;
     }
 
@@ -89,6 +116,8 @@
         return new Promise(
             (res)=>setTimeout(
                 ()=>{
+                    loading.value = false;
+                    controlsErr.value = '';
                     info.value = null;
                     res(true);
                 }, 
@@ -102,41 +131,53 @@
 
         info.value = await feedbackAPI.get(id.value).catch(
             (error) => {
+                console.log('!',error)
                 err.value = error.message || error
             }
         );
+
+        console.log(info.value)
 
         currentColor.value = Static().getColor(info.value?.color || 1)
 
         setTimeout(()=>fade.value = false);
     }
 
-    watch(
-        id,
-        (n,o)=>{
-            if(o && n){
-                updateInfo();
-                return;
-            };
+    const init = (n,o)=>{
+        // console.log(n,o);
+        if(o && n){
+            updateInfo();
+            return;
+        };
 
-            if(n){
-                modal.value.call();
-                updateInfo();
+        if(n){
+            modal.value.call();
+            updateInfo();
 
-                loop.value = false;
-                offset.value = 1;
+            loop.value = false;
+            offset.value = 0;
 
-                if(R().query?.larr){
-                    idList.value = R().query.larr.split(';');
-                    R().pushQuery({l: n, larr: null});
-                }else{
-                    idList.value = [n];
-                }
+            if(R().query?.larr){
+                idList.value = R().query.larr.split(';');
+                offset.value = parseInt(R().query.offset) || 0;
+                console.log(
+                    idList.value,
+                    offset.value
+                )
+                R().pushQuery({[isAdmin.value?'lAdmin':'l']: n, larr: null, offset: null});
             }else{
-                modal.value.close()
+                idList.value = [n];
             }
+        }else{
+            modal.value.close()
         }
-    )
+    }
+
+    onMounted(()=>{
+        init(id.value);
+    })
+
+    watch(id, init);
 
 // move 
     const move = async (v=1)=>{
@@ -144,32 +185,52 @@
 
         await clearInfo();
 
-        if(loop.value){
-            R().pushQuery({l: idList.value[v == 1?0:idList.value.length -1]});
-            if(idList.value.length == 1)updateInfo();
-            return;
-        }
-
         let localId = idList.value.indexOf(id.value);
 
         if(localId+v == -1 || localId+v == idList.value.length){
+            if(loop.value){
+                R().pushQuery({[isAdmin.value?'lAdmin':'l']: idList.value[v == 1?0:idList.value.length -1]});
+                if(idList.value.length == 1)updateInfo();
+                return;
+            }
+
             if(!await updateList(v)){
+                R().pushQuery({[isAdmin.value?'lAdmin':'l']: idList.value[v == 1?0:idList.value.length -1]});
                 updateInfo();
                 return;
             }
         }
 
         localId = idList.value.indexOf(id.value);
-
-        R().pushQuery({l: idList.value[localId + v]});
+        
+        R().pushQuery({[isAdmin.value?'lAdmin':'l']: idList.value[localId == null?0:localId + v]});
     }
 
 //color
     const currentColor = ref();
 
+//admin
+    const loading = ref();
+    const controlsErr = ref();
+
+    const setStatus = async (status)=>{
+        loading.value = true;
+        controlsErr.value = '';
+
+        await feedbackAPI
+            .setStatus(id.value, status)
+            .catch(error => controlsErr.value = error.message || error);
+        
+        if(!controlsErr.value){
+            info.value.status = status;
+        }
+
+        loading.value = false;
+    }
+
 //close
     const close = ()=>{
-        R().pushQuery({l: null})
+        R().pushQuery({l: null, lAdmin: null});
         
         fade.value = true;
         setTimeout(()=>{
@@ -245,6 +306,39 @@
             position: relative;
             padding: 0 2rem;
             width: max-content;
+
+            .btns{
+                display: flex;
+                gap: 2rem;
+
+                .btn{
+                    padding: 0;
+                    width: 4.8rem;
+                    height: 4.8rem;
+                    border-radius: 50%;
+                    
+                    --color: transparent;
+
+                    border: .2rem solid var(--color);
+
+                    background: transparent;
+
+                    &[active]{
+                        background: var(--color);
+                    }
+
+                    &.REJECT{
+                        --color: #ff4642;
+                        font-weight: 600;
+                    }
+                    &.APPROVE{
+                        --color: #adff59;
+                        font-size: 2.8rem;
+                    }
+                }
+            }
+
+            
         }
     }
 

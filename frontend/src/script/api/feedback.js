@@ -7,10 +7,15 @@ export default {
             `/feedback/${id}`
         )
     },
-    getList(page, size, filters={} /* graduationYear, faculty */){
+    getList(
+        type /*approved, notModerated, all*/, 
+        page, 
+        size, 
+        filters={} /* graduationYear, faculty */
+    ){
         return sendAPI(
             'get',
-            '/feedback/approved',
+            `/${type == 'approved'?'feedback':'moderator'}/${type}`,
             Object.assign(
                 {
                     page,
@@ -25,6 +30,12 @@ export default {
             'post',
             `/feedback/add`,
             data
+        )
+    },
+    setStatus(id, feedbackStatus){
+        return sendAPI(
+            'put',
+            `/moderator/status/${id}?feedbackStatus=${feedbackStatus}`,
         )
     },
 }

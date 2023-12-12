@@ -59,21 +59,30 @@
     )
 
     const stopAll = ()=>{
-        links.value.forEach(e => {
-            e.ref?.player?.stopVideo()
-        });
+        setTimeout(()=>{
+            links.value.forEach(e => {
+                e.ref?.player?.stopVideo()
+            });
+        })
     }
 
     watch(slideId, stopAll);
 
-    onMounted(()=>{
-        setTimeout(stopAll);
-    })
+    onMounted(stopAll);
 </script>
 
 <style lang="scss" scoped>
     .slide{
         padding: 0 1.6rem 1.6rem;
+
+        .loader{
+            height: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            color: var(--c-grey);
+        }
     }
 
     .carousel-wr{
@@ -86,7 +95,7 @@
             position: relative;
             width: 60rem;
             height: calc(var(--w) * 0.53333);
-            background: var(--c-white);
+            background: #000;
             border-radius: 2.5rem;
             overflow: hidden;
 
@@ -97,14 +106,6 @@
                 z-index: 1;
             }
         }
-    }
-
-    .loader{
-        height: 100%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        margin: auto;
     }
 
     @media (max-width: $mobile-med){

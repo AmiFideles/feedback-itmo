@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue';
 import List from '@/views/List.vue';
 
-import Admin from '@/views/Admin.vue';
+import Admin from '@/views/admin/Admin.vue';
 
 const routes = [
     {
@@ -17,8 +17,24 @@ const routes = [
         component: List
     },
     {
+        path: '/:catchAll(.*)',
+        redirect: to => {
+            return {name: "Home"}
+        },
+    },
+
+    
+
+    //admin
+    {
         path: '/admin',
         name: 'Admin',
+        component: Admin,
+        meta: {admin: true}
+    },
+    {
+        path: '/admin/all',
+        name: 'AAllList',
         component: Admin,
         meta: {admin: true}
     },

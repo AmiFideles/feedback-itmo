@@ -3,10 +3,13 @@
         <RouterLink :to="{name: 'Home'}" class="logo">
             <img src="/logo.png" class="image"/>
         </RouterLink>
-
-        <div class="links" :drop="drop || null" @click="drop = false">
+        <div class="links" v-if="!isAdmin" :drop="drop || null" @click="drop = false">
             <a class="sh-link" @click="R().pushQuery({infoModal: 'true'})">Инструкция</a>
             <a class="sh-link" @click="R().pushQuery({lsend: 'true'})">Оставить послание</a>
+        </div>
+        <div class="links" v-if="isAdmin && A().isLogged" :drop="drop || null" @click="drop = false">
+            <RouterLink class="sh-link" :to="{name: 'Admin'}">Модерация</RouterLink>
+            <a class="sh-link" @click="A().exit()">Выйти</a>
         </div>
 
         <div class="caller" mob :drop="drop || null" @click="drop = !drop">
@@ -21,10 +24,13 @@
     import ILogo from "@/components/icons/ILogo.vue";
 
     import R from "@/stores/Router.js"
+    import A from "@/stores/Admin.js";
     
-    import { ref } from "vue";
+    import { computed, ref } from "vue";
 
     const drop = ref(false);
+
+    const isAdmin = computed(()=>R().meta?.admin);
 </script>
 
 <style lang="scss" scoped>

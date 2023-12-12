@@ -11,11 +11,6 @@ export default defineStore("Admin", ()=>{
     const isLogged = ref(null);
 
     const checkLogin = ()=>{
-        if(!getCookie('refreshToken')){
-            isLogged.value = false;
-            return
-        }
-
         refresh();
     }
 
@@ -31,7 +26,10 @@ export default defineStore("Admin", ()=>{
     const refresh = async ()=>{
         let err = false;
 
-        console.log(adminAPI);
+        if(!getCookie('refreshToken')){
+            isLogged.value = false;
+            return
+        }
 
         let resp = await adminAPI.refresh(getCookie('refreshToken')).catch(
             e => err = true
@@ -65,7 +63,7 @@ export default defineStore("Admin", ()=>{
 
         setCookie('accessToken', resp.accessToken, {'max-age': 2678400000});
         setCookie('refreshToken', resp.refreshToken, {'max-age': 2678400000});
-        isLogged = true;
+        isLogged.value = true;
     }
 
     const exit = ()=>{
@@ -81,6 +79,7 @@ export default defineStore("Admin", ()=>{
 return {
     isLogged,
     checkLogin,
+    refresh,
     login,
     exit
 }

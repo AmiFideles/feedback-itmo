@@ -120,22 +120,11 @@
                 name: {title: "Ваши имя и фамилия", value: ""},
                 graduationYear: {title: "Год выпуска", value: years.value[0], list: years.value},
                 faculty: {title: "Ваше подразделение в ИТМО", value: ""},
-                mentorName: {title: "Имя и фамилия наставника", value: ""},
-                mentorEmail: {title: "Email наставника", value: ""},
+                mentorName: {title: "Имя и фамилия адресата", value: ""},
+                mentorEmail: {title: "Email адресата", value: ""},
                 messageText: {title: "Текст послания", value: ""},
                 prompt: {title: "Выберите послание", value: null, list: prompts},
             }
-
-            //tmp
-            // data.value = {
-            //     name: {title: "Ваши имя и фамилия", value: "Test Boy"},
-            //     graduationYear: {title: "Ваши имя и фамилия", value: years.value[0], list: years.value},
-            //     faculty: {title: "Ваше подразделение в ИТМО", value: "Test_Fac"},
-            //     mentorName: {title: "Имя и фамилия наставника", value: "Testor 1"},
-            //     mentorEmail: {title: "Email наставника", value: ""},
-            //     messageText: {title: "Текст послания", value: "Test\n\nText\n\nBoy"},
-            //     prompt: {title: "Выберите послание", value: prompts.value[1], list: prompts},
-            // }
 
             modal.value.call();
         }else{
@@ -186,7 +175,7 @@
         }
 
         if(!toSend.firstName)err.value = 'Заполните имя';
-        if(!toSend.mentorName)err.value = 'Заполните ФИО наставника';
+        if(!toSend.mentorName)err.value = 'Заполните ФИО адресата';
         if(!toSend.messageText)err.value = 'Оставьте послание';
         if(toSend.mentorEmail && !validateEmail(toSend.mentorEmail))err.value = 'Неверный Email';
 

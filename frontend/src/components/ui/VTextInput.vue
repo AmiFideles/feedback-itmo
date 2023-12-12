@@ -33,6 +33,8 @@
 
     const emit = defineEmits(['update:modelValue']);
 
+    const inp = ref();
+
     let delayTimeout = null;
     const text = ref(props.modelValue != null ? props.modelValue : '');
     watch(text, (n)=>{
@@ -44,6 +46,13 @@
         )
     });
     watch(()=>props.modelValue, (n)=>text.value = n);
+
+//
+    const focus = ()=>{
+        inp.value.focus();
+    }
+
+    defineExpose({focus});
 </script>
 
 <style lang="scss" scoped>

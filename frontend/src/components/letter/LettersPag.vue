@@ -1,7 +1,7 @@
 <template>
     <div class="letters">
         <div class="letters-container">
-            <LCard v-for="(i,k) in list" :key="k" :info="i" :list="list"/>
+            <LCard v-for="(i,k) in list" :key="k" :info="i" :list="list" :offset="offset" :admin="admin"/>
         </div>
 
         <VErr :err="err"/>
@@ -18,6 +18,10 @@
     import { feedbackAPI } from "@/script/api";
     
     import { onMounted, onUnmounted, ref, watch } from "vue";
+
+    const props = defineProps({
+        admin: Boolean
+    });
 
     const list = ref([]);
 
@@ -39,6 +43,7 @@
         reset();
     });
     watch(()=>R().query.filters, reset);
+    watch(()=>R().route.name, reset);
 
     onMounted(()=>{(document.body).addEventListener('scroll', checkPag);});
     onUnmounted(()=>(document.body).removeEventListener('scroll', checkPag));
@@ -48,14 +53,17 @@
         err.value = '';
 
         let res = await feedbackAPI.getList(
-            offset.value,
-            15,
+            !props.admin?
+                'approved':
+            R().route.name == 'AAllList'?
+                'all':
+                'notModerated',
+            offset.value, 
+            15, 
             R().parseQuery('filters')
-        ).catch(err => {
-            err.value = err;
+        ).catch(error => {
+            err.value = error;
         });
-
-        console.log(res);
 
         if(err.value){
             stop.value = true;
@@ -69,7 +77,7 @@
             stop.value = true;
             return;
         }
-       
+        
         setTimeout(()=>{
             pause.value = false;
             checkPag();
@@ -86,6 +94,8 @@
             paginate();
         }
     }
+
+    defineExpose({reset})
 
 
 </script>
