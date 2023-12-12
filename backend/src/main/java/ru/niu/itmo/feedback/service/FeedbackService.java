@@ -101,6 +101,10 @@ public class FeedbackService {
         return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
+    public Page<FeedbackResponseDto> getAll(FeedbackStatus feedbackStatus, Pageable pageable) {
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatusOrderByDateTimeDesc(feedbackStatus, pageable);
+        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
+    }
 
     public Long getTotalFeedbackCount() {
         return feedbackRepository.count();

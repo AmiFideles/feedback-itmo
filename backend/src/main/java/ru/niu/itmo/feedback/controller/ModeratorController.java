@@ -48,18 +48,18 @@ public class ModeratorController {
         }
     }
 
-    @ApiResponse(responseCode = "401", description = "unauthorized")
-    @ApiResponse(responseCode = "403", description = "access is denied")
-    @GetMapping("/all")
-    @Operation(
-            summary = "Get all feedback",
-            description = "Get a paginated and sorted page of all feedback.",
-            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    public ResponseEntity<Page<FeedbackResponseDto>> getAllFeedback(
-            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAllFeedback(pageable);
-        return ResponseEntity.ok(feedbackPage);
-    }
+//    @ApiResponse(responseCode = "401", description = "unauthorized")
+//    @ApiResponse(responseCode = "403", description = "access is denied")
+//    @GetMapping("/all")
+//    @Operation(
+//            summary = "Get all feedback",
+//            description = "Get a paginated and sorted page of all feedback.",
+//            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+//    public ResponseEntity<Page<FeedbackResponseDto>> getAllFeedback(
+//            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAllFeedback(pageable);
+//        return ResponseEntity.ok(feedbackPage);
+//    }
 
     @ApiResponse(responseCode = "401", description = "unauthorized")
     @ApiResponse(responseCode = "403", description = "access is denied")
@@ -72,6 +72,19 @@ public class ModeratorController {
     public ResponseEntity<Page<FeedbackResponseDto>> getNotModeratedFeedback(
             @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<FeedbackResponseDto> feedbackPage = feedbackService.getNotModeratedFeedback(pageable);
+        return ResponseEntity.ok(feedbackPage);
+    }
+
+
+    @ApiResponse(responseCode = "401", description = "unauthorized")
+    @ApiResponse(responseCode = "403", description = "access is denied")
+    @Operation(
+            summary = "Get all feedback by status",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/all")
+    public ResponseEntity<Page<FeedbackResponseDto>> getAll(@RequestParam FeedbackStatus status,
+                                                            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAll(status, pageable);
         return ResponseEntity.ok(feedbackPage);
     }
 

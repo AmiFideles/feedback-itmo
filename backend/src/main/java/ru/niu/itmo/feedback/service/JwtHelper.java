@@ -28,8 +28,8 @@ public class JwtHelper {
 
     public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret, @Value("${refreshTokenExpirationDays}") int refreshTokenExpirationDays, @Value("${accessTokenExpirationMinutes}") int accessTokenExpirationMinutes) {
         accessTokenExpirationMs = (long) accessTokenExpirationMinutes * 60 * 1000;
-//        refreshTokenExpirationMs = (long) refreshTokenExpirationDays * 24 * 60 * 60 * 1000;
-       refreshTokenExpirationMs = (long) refreshTokenExpirationDays * 60 * 1000;
+        refreshTokenExpirationMs = (long) refreshTokenExpirationDays * 24 * 60 * 60 * 1000;
+//       refreshTokenExpirationMs = (long) refreshTokenExpirationDays * 60 * 1000;
         accessTokenAlgorithm = Algorithm.HMAC512(accessTokenSecret);
         refreshTokenAlgorithm = Algorithm.HMAC512(refreshTokenSecret);
         accessTokenVerifier = JWT.require(accessTokenAlgorithm)
