@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.niu.itmo.feedback.dto.request.MessageDto;
 import ru.niu.itmo.feedback.dto.response.FeedbackResponseDto;
 import ru.niu.itmo.feedback.entity.FeedbackStatus;
 import ru.niu.itmo.feedback.service.FeedbackService;
@@ -48,18 +49,18 @@ public class ModeratorController {
         }
     }
 
-//    @ApiResponse(responseCode = "401", description = "unauthorized")
-//    @ApiResponse(responseCode = "403", description = "access is denied")
-//    @GetMapping("/all")
-//    @Operation(
-//            summary = "Get all feedback",
-//            description = "Get a paginated and sorted page of all feedback.",
-//            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-//    public ResponseEntity<Page<FeedbackResponseDto>> getAllFeedback(
-//            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-//        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAllFeedback(pageable);
-//        return ResponseEntity.ok(feedbackPage);
-//    }
+    @ApiResponse(responseCode = "401", description = "unauthorized")
+    @ApiResponse(responseCode = "403", description = "access is denied")
+    @GetMapping("/all")
+    @Operation(
+            summary = "Get all feedback",
+            description = "Get a paginated and sorted page of all feedback.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    public ResponseEntity<Page<FeedbackResponseDto>> getAllFeedback(
+            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAllFeedback(pageable);
+        return ResponseEntity.ok(feedbackPage);
+    }
 
     @ApiResponse(responseCode = "401", description = "unauthorized")
     @ApiResponse(responseCode = "403", description = "access is denied")
@@ -76,16 +77,32 @@ public class ModeratorController {
     }
 
 
+//    @ApiResponse(responseCode = "401", description = "unauthorized")
+//    @ApiResponse(responseCode = "403", description = "access is denied")
+//    @Operation(
+//            summary = "Get all feedback by status",
+//            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+//    @GetMapping("/all")
+//    public ResponseEntity<Page<FeedbackResponseDto>> getAll(@RequestParam FeedbackStatus status,
+//                                                            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAll(status, pageable);
+//        return ResponseEntity.ok(feedbackPage);
+//    }
+
+
     @ApiResponse(responseCode = "401", description = "unauthorized")
     @ApiResponse(responseCode = "403", description = "access is denied")
     @Operation(
-            summary = "Get all feedback by status",
-            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/all")
-    public ResponseEntity<Page<FeedbackResponseDto>> getAll(@RequestParam FeedbackStatus status,
-                                                            @PageableDefault(page = 0, size = 10, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<FeedbackResponseDto> feedbackPage = feedbackService.getAll(status, pageable);
-        return ResponseEntity.ok(feedbackPage);
+            summary = "Update message text by id",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)}
+    )
+    @PutMapping("/messageText/{feedbackId}")
+    public ResponseEntity<Void> updateFeedback(
+            @PathVariable Long feedbackId,
+            @RequestBody MessageDto messageDto) {
+        feedbackService.updateFeedbackMessageText(feedbackId, messageDto);
+        return ResponseEntity.ok().build();
     }
+
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.niu.itmo.feedback.dto.request.FeedbackRequestDto;
+import ru.niu.itmo.feedback.dto.request.MessageDto;
 import ru.niu.itmo.feedback.dto.response.FeedbackResponseDto;
 import ru.niu.itmo.feedback.entity.Color;
 import ru.niu.itmo.feedback.entity.Feedback;
@@ -120,5 +121,12 @@ public class FeedbackService {
 
         Page<Feedback> resultPage = feedbackRepository.findAll(specification, pageable);
         return resultPage.map(FeedbackMapper.INSTANCE::toResponseDto);
+    }
+
+    @Transactional
+    public void updateFeedbackMessageText(Long feedbackId, MessageDto messageDto) {
+        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new FeedbackNotFoundException("Feedback not found with ID: " + feedbackId));
+        feedback.setMessageText(messageDto.getMessageText());
+        feedbackRepository.save(feedback);
     }
 }
