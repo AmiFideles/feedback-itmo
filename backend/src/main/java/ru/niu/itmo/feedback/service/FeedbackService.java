@@ -108,7 +108,8 @@ public class FeedbackService {
     }
 
     public Long getTotalFeedbackCount() {
-        return feedbackRepository.count();
+        return feedbackRepository.countFeedbackByStatus(FeedbackStatus.APPROVED);
+//        return feedbackRepository.count();
     }
 
     public Page<FeedbackResponseDto> getAllFeedback(Pageable pageable) {
