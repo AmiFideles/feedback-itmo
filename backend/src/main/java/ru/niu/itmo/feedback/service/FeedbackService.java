@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.niu.itmo.feedback.dto.request.FeedbackRequestDto;
-import ru.niu.itmo.feedback.dto.request.MessageDto;
+import ru.niu.itmo.feedback.dto.request.UpdateFeedbackDto;
 import ru.niu.itmo.feedback.dto.response.FeedbackResponseDto;
 import ru.niu.itmo.feedback.entity.Color;
 import ru.niu.itmo.feedback.entity.Feedback;
@@ -124,9 +124,16 @@ public class FeedbackService {
     }
 
     @Transactional
-    public void updateFeedbackMessageText(Long feedbackId, MessageDto messageDto) {
-        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new FeedbackNotFoundException("Feedback not found with ID: " + feedbackId));
-        feedback.setMessageText(messageDto.getMessageText());
+    public void updateFeedback(UpdateFeedbackDto updateFeedbackDto) {
+        Feedback feedback = feedbackRepository.findById(updateFeedbackDto.getId())
+                .orElseThrow(() -> new FeedbackNotFoundException("Feedback not found"));
+        feedback.setFirstName(updateFeedbackDto.getFirstName());
+        feedback.setLastName(updateFeedbackDto.getLastName());
+        feedback.setFaculty(updateFeedbackDto.getFaculty());
+        feedback.setMentorName(updateFeedbackDto.getMentorName());
+        feedback.setMessageText(updateFeedbackDto.getMessageText());
+        feedback.setMentorEmail(updateFeedbackDto.getMentorEmail());
+        feedback.setStatus(FeedbackStatus.valueOf(updateFeedbackDto.getStatus()));
         feedbackRepository.save(feedback);
     }
 }
