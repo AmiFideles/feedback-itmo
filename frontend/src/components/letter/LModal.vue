@@ -13,6 +13,11 @@
             </div>
         </template>
 
+        
+        <div class="sender" v-if="info?.firstName">
+            <p>от: {{info.firstName}} {{info.lastName}}</p>
+        </div>
+
         <div class="content">
             <div class="loader-wr" :show="fade || null">
                 <VLoading/>
@@ -244,7 +249,7 @@
     .name-wr{
         position: relative;
         min-width: 0;
-        padding-bottom: 1.2rem;
+        padding-bottom: .8rem;
 
         &::after{
             @include pseudo-absolute;
@@ -260,6 +265,15 @@
             font-weight: 400;
             @include text-overflow;
             min-height: 1em;
+        }
+    }
+    
+    .sender{
+        min-width: 0;
+        padding-top: .8rem;
+
+        p{
+            @include text-overflow;
         }
     }
 

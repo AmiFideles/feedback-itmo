@@ -3,6 +3,9 @@
         <div class="title">
             <p>{{info.mentorName}}</p>
         </div>
+        <div class="name" v-if="info.firstName">
+            <p>от: {{info.firstName}} {{info.lastName}}</p>
+        </div>
         <div class="body">
             <p>{{info.messageText}}</p>
         </div>
@@ -85,11 +88,21 @@
             width: max-content;
             min-width: 0;
             max-width: 100%;
-            margin-bottom: 1.6rem;
+            margin-bottom: .8rem;
 
             p{
                 width: 100%;
                 font-size: 2.4rem;
+                @include text-overflow;
+            }
+        }
+
+        .name{
+            margin-bottom: 1.6rem;
+
+            p{
+                width: 100%;
+                font-size: 1.6rem;
                 @include text-overflow;
             }
         }

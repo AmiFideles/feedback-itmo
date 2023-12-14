@@ -25,6 +25,12 @@ export default {
             )
         )
     },
+    getCount(){
+        return sendAPI(
+            'get',
+            `/feedback/count/`
+        )
+    },
     add(data){
         return sendAPI(
             'post',

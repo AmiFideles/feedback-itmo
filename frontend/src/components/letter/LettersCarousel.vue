@@ -52,7 +52,7 @@
 
         list.value.push(...l);
 
-        if(res.totalPages < offset.value || !l || !l.length){
+        if(res.totalPages <= offset.value || !l || !l.length){
             stop.value = true;
             return;
         }

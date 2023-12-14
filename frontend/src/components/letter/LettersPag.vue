@@ -36,7 +36,7 @@
         pause.value = false;
         stop.value = false;
         list.value = []; 
-        paginate();
+        checkPag();
     }
 
     onMounted(()=>{
@@ -50,6 +50,8 @@
 
 
     const paginate = async ()=>{
+        console.log(offset.value);
+
         err.value = '';
 
         let res = await feedbackAPI.getList(
@@ -77,6 +79,8 @@
             stop.value = true;
             return;
         }
+
+        console.log(offset.value);
         
         setTimeout(()=>{
             pause.value = false;
@@ -85,6 +89,7 @@
     }
 
     const checkPag = ()=>{
+        console.log(pause.value, stop.value)
         if(
             !pause.value && 
             !stop.value && 

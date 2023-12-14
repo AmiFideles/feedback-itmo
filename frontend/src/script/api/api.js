@@ -25,6 +25,7 @@ export const sendAPI = (method, url, data, options)=>{
     }
 
     return new Promise(async (resolve, reject)=>{
+        let prevPrevStatus = prevStatus;
         await axios(body).then(
             (res)=>{
                 prevStatus = res.status;
@@ -34,14 +35,18 @@ export const sendAPI = (method, url, data, options)=>{
             async (err)=>{
                 prevStatus = err?.response?.status;
                 if(err?.response?.status == 401){
-                    if(err?.response?.data?.error != "Unauthorized" || prevStatus == 401){
+                    if(err?.response?.data?.error != "Unauthorized" || prevPrevStatus == 401){
                         A().exit();
                         reject(err.response.data || err);
+                        
                         return;
                     }
+                    
                     await A().refresh();
                     resolve(await sendAPI(method, url, data, options));
+                    return;
                 }
+
                 reject(err.response?.data || err);
             }
         );

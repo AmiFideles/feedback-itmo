@@ -1,6 +1,6 @@
 <template>
     <div class="letters-wr">
-        <div class="cas-wr">
+        <div class="cas-wr cas-wr-primary">
             <div class="tabs">
                 <div class="refresh-wr" :spin="spin || null" @click="refresh">
                     <div class="sh-link refresh">
@@ -75,10 +75,18 @@
 
         &::after{
             @include pseudo-absolute;
+            bottom: 0;
+            left: 0;
+            height: .2rem;
+            width: 0;
+            background: var(--c-black);
+            transition: .3s;
         }
 
-        &.router-link-exact-active{
-            
+        &.router-link-active{
+            &::after{
+                width: 100%;
+            }
         }
     }
 </style>

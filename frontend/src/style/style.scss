@@ -96,7 +96,7 @@ ul{
     margin: 0 auto;
     max-width: 155.4rem;
 
-    &:first-child{
+    &-primary{
         padding-top: calc(12.8rem + 7.2rem);
 
         @media (max-width: $mobile-big){

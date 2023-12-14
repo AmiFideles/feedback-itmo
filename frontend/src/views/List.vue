@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="cas-wr filters-wr">
+        <div class="cas-wr cas-wr-primary filters-wr">
             <div class="filters-wr-wr">
                 <p>Сортировка</p>
                 <div class="filters">

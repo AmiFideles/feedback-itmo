@@ -1,7 +1,7 @@
 <template>
     <div class="page-wr">
         <div class="lighthouse-wr">
-            <Lighthouse class="cas-wr"/>
+            <Lighthouse class="cas-wr cas-wr-primary"/>
         </div>
 
         <!-- <div class="ribbons">
@@ -21,6 +21,10 @@
                 <RouterLink :to="{name: 'List'}">
                     <VButton med>Смотреть все послания</VButton>
                 </RouterLink>
+                <div class="count">
+                    <p>Счетчик посланий</p>
+                    <p class="num">{{round(Static().lettersCount || 0, 0, {splitThree: true})}}</p>
+                </div>
             </div>
         </div>
         
@@ -32,18 +36,25 @@
         </div>
 
         <div class="vids-wr about cas-wr">
-            <p>
-                Видеоинтервью с&nbsp;преподавателями, менторами, адаптерами и&nbsp;эдвайзерами ИТМО
-            </p>
+            <p>Видеоинтервью с&nbsp;преподавателями, менторами, адаптерами и&nbsp;эдвайзерами ИТМО</p>
             <VideosCarousel/>
         </div>
 
+        <div class="cas-wr">
+            
+        </div>
         <div class="team about cas-wr">
             <p>Команда проекта</p>
             <div class="team-wr">
                 <a :href="i.href" class="sh-link" v-for="(i,k) in team" :key="k" target="_blank">
                     <img :src="i.img" alt="" :style="{height: i.h}">
                 </a>
+            </div>
+        </div>
+
+        <div class="cas-wr">
+            <div class="feedback">
+
             </div>
         </div>
 
@@ -57,6 +68,9 @@
     import VideosCarousel from "@/components/home/VideosCarousel.vue";
 
     import R from "@/stores/Router.js";
+    import Static from "@/stores/Static.js";
+
+    import { round } from "@/script/helpers/num.js"
     
     import { computed, ref } from "vue";
 
@@ -66,6 +80,7 @@
         {href: "https://news.itmo.ru/ru/university_live/social_activity/news/13259/", img: "/img/team/1.png", h: "8.7rem"},
         {href: "https://alumni.itmo.ru/", img: "/img/team/2.png", h: "3.5rem"},
     ]);
+    
 </script>
 
 <style lang="scss" scoped>
@@ -103,6 +118,27 @@
         .btn-wr{
             @include flex-c;
             padding-top: 6.4rem;
+
+            gap: 1.6rem 12.8rem;
+            flex-wrap: wrap;
+
+            .count{
+                font-size: 2.4rem;
+                display: flex;
+                align-items: baseline;
+                justify-content: center;
+                flex-wrap: wrap;
+                
+                p{
+                    padding: .5em 2.08em;;
+                }
+
+                .num{
+                    margin-left: 1em;
+                    background: var(--c-orange-field);
+                    border-radius: 5rem;
+                }
+            }
         }
     }
 
@@ -142,6 +178,10 @@
 
         .about p{
             text-align: start;
+            font-size: 1.6rem;
+        }
+
+        .carousel .btn-wr .count{
             font-size: 1.6rem;
         }
 
