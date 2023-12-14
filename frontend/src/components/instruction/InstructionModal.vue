@@ -35,7 +35,7 @@
     watch(
         ()=>R().query.infoModal,
         (n)=>{
-            n?modal.value.call():modal.value.close()
+            n?modal.value.modal.call():modal.value.close()
         }
     )
 

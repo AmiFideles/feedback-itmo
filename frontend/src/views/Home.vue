@@ -10,9 +10,7 @@
         </div> -->
 
         <div class="about cas-wr">
-            <p>
-                Мы&nbsp;точно знаем, что успех каждого человека&nbsp;&mdash; это его усилия, труд и&nbsp;вовремя полученный ценный совет. Вспомните того, кто однажды вдохновил, поддержал, поверил, оказался рядом&nbsp;&mdash; вашего преподавателя, наставника, коллегу. Быть признательным и&nbsp;не&nbsp;бояться рассказать об&nbsp;этом всему миру&nbsp;&mdash; это стиль жизни <a href="https://be.itmo.ru/">Университета счастья</a>. Присоединяйтесь, be&nbsp;ITMO!
-            </p>
+            <p>Мы&nbsp;точно знаем, что успех каждого человека&nbsp;&mdash; это его усилия, труд и&nbsp;вовремя полученный ценный совет. Вспомните того, кто однажды вдохновил, поддержал, поверил, оказался рядом&nbsp;&mdash; вашего преподавателя, наставника, коллегу. Быть признательным и&nbsp;не&nbsp;бояться рассказать об&nbsp;этом всему миру&nbsp;&mdash; это стиль жизни <a href="https://be.itmo.ru/">Университета счастья</a>. Присоединяйтесь, be&nbsp;ITMO!</p>
         </div>
 
         <div class="carousel cas-wr">
@@ -29,20 +27,15 @@
         </div>
         
         <div class="about cas-wr">
-            <p>
-                Поделитесь с&nbsp;нами историями о&nbsp;ваших наставниках, напишите несколько слов благодарности, расскажите о&nbsp;том, кто стал для вас маяком, указавшим путь в&nbsp;большом плавании жизни
-            </p>
+            <p>Поделитесь с&nbsp;нами историями о&nbsp;ваших наставниках, напишите несколько слов благодарности, расскажите о&nbsp;том, кто стал для вас маяком, указавшим путь в&nbsp;большом плавании жизни</p>
             <VButton big @click="R().pushQuery({lsend: 'true'})">Оставить послание</VButton>
         </div>
 
-        <div class="vids-wr about cas-wr">
+        <div class="vids-wr thin-wr about cas-wr">
             <p>Видеоинтервью с&nbsp;преподавателями, менторами, адаптерами и&nbsp;эдвайзерами ИТМО</p>
             <VideosCarousel/>
         </div>
 
-        <div class="cas-wr">
-            
-        </div>
         <div class="team about cas-wr">
             <p>Команда проекта</p>
             <div class="team-wr">
@@ -52,13 +45,12 @@
             </div>
         </div>
 
-        <div class="cas-wr">
-            <div class="feedback">
-
-            </div>
+        <div class="about thin-wr feedback-wr cas-wr">
+            <p>Обратная связь по&nbsp;проекту</p>
+            <VButton big @click="$refs.feedbackModal.modal.call()">Есть предложения!</VButton>
         </div>
 
-
+        <FeedbackModal ref="feedbackModal"/>
     </div>
 </template>
 
@@ -66,6 +58,7 @@
     import Lighthouse from "@/components/home/Lighthouse.vue";
     import LettersCarousel from "@/components/letter/LettersCarousel.vue";
     import VideosCarousel from "@/components/home/VideosCarousel.vue";
+    import FeedbackModal from "@/components/home/FeedbackModal.vue";
 
     import R from "@/stores/Router.js";
     import Static from "@/stores/Static.js";
@@ -130,13 +123,15 @@
                 flex-wrap: wrap;
                 
                 p{
-                    padding: .5em 2.08em;;
+                    padding: .5em 0;
                 }
 
                 .num{
                     margin-left: 1em;
                     background: var(--c-orange-field);
                     border-radius: 5rem;
+                    padding-left: 2.08em;
+                    padding-right: 2.08em;
                 }
             }
         }
@@ -148,9 +143,10 @@
 
         P{
             text-align: left;
+            padding-right: var(--generic-padding);
         }
 
-        @media (max-width: $laptop){
+        @media (max-width: 1485px){
             flex-direction: column;
 
             p{
@@ -159,16 +155,30 @@
         }
     }
 
-    .team{
+    .about.team{
         flex-direction: row;
         flex-wrap: wrap;
+        gap: 1.6rem 6.4rem;
+        justify-content: center;
 
-        &-wr{
+        .team-wr{
             display: flex;
             align-items: center;
             flex-wrap: wrap;
             gap: 1.6rem 6.6rem;
         }
+    }
+
+    .about.feedback-wr{
+        flex-direction: row;
+        justify-content: center;
+        gap: 1.6rem 12.8rem;
+        flex-wrap: wrap;
+    }
+
+    .thin-wr{
+        padding-left: calc(var(--generic-padding) * 2);
+        padding-right: calc(var(--generic-padding) * 2);
     }
 
     @media (max-width: $mobile-big){
@@ -195,6 +205,11 @@
             &-wr{
                 justify-content: center;
             }
+        }
+
+        .thin-wr{
+            padding-left: var(--generic-padding);
+            padding-right: var(--generic-padding);
         }
     }
 </style>

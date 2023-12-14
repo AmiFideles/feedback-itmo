@@ -1,12 +1,12 @@
 <template>
     <div class="modal" :show="show || null">
-        <div class="container-wr" @mousedown.self="emit('close')">
+        <div class="container-wr" @mousedown.self="closeHandler">
             <div class="container">
                 <div class="title-wr">
                     <div class="title">
                         <slot name="title"/>
                     </div>
-                    <div class="close sh-link" @click="emit('close')">
+                    <div class="close sh-link" @click="closeHandler">
                         <IClose class="ico"/>
                     </div>
                 </div>
@@ -23,6 +23,10 @@
 
     import IClose from "@/components/icons/IClose.vue";
 
+    const props = defineProps({
+        closeNative: Boolean
+    })
+
     const emit = defineEmits(['close', 'call'])
     const show = ref(false)
 
@@ -35,6 +39,11 @@
         show.value = true;
 
         emit('call');
+    }
+
+    const closeHandler = ()=>{
+        emit('close');
+        if(props.closeNative)close();
     }
 
     const close = ()=>{

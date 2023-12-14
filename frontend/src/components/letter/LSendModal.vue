@@ -20,12 +20,10 @@
             <div class="form" :show="!success || null">
                 <div class="inp-wr" v-for="(i,k) in data" :key="k">
                     <div class="title">{{i.title}}</div>
-                    <textarea 
+                    <VTextarea 
                         v-if="k == 'messageText'" 
                         :placeholder="i.title" 
-                        v-model="i.value"  
-                        rows="3"
-                        oninput="this.style.height = ''; this.style.height = (this.scrollHeight) +'px'"
+                        v-model="i.value"
                     />
                     <VSelect 
                         v-else-if="i.list" 
@@ -188,8 +186,6 @@
             error => err.value = error.message || error
         )
 
-        console.log(res);
-
         loading.value = false;
 
         if(!err.value){
@@ -234,28 +230,6 @@
 
         
     }
-
-    textarea{
-        background: var(--c-white);
-        border-radius: 1.643em;
-        padding: 1.072em 1.714em;
-        width: 100%;
-        width: 100%;
-        border: none;
-        resize: none;
-        display: block;
-        // max-height: 12em;
-
-        &::-webkit-scrollbar{
-            display: none;
-        }
-
-        &::placeholder{
-            color: var(--c-grey-dark);
-        }
-    }
-
-    
 
     .controls{
         @include flex-jtf;

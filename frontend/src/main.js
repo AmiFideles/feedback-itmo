@@ -22,6 +22,7 @@ const app = createApp(App)
     import VButton from '@/components/ui/VButton.vue';
     import VSelect from '@/components/ui/VSelect.vue';
     import VTextInput from '@/components/ui/VTextInput.vue';
+    import VTextarea from '@/components/ui/VTextarea.vue';
     import VScrollTop from '@/components/ui/VScrollTop.vue';
     import VModal from '@/components/ui/modal/VModal.vue';
     import VErr from '@/components/ui/VErr.vue';
@@ -30,6 +31,7 @@ const app = createApp(App)
     app.component('VButton', VButton);
     app.component('VSelect', VSelect);
     app.component('VTextInput', VTextInput);
+    app.component('VTextarea', VTextarea);
     app.component('VScrollTop', VScrollTop);
     app.component('VModal', VModal);
     app.component('VErr', VErr);
