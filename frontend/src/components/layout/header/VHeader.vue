@@ -8,7 +8,8 @@
             <a class="sh-link" @click="R().pushQuery({lsend: 'true'})">Оставить послание</a>
         </div>
         <div class="links" v-if="isAdmin && A().isLogged" :drop="drop || null" @click="drop = false">
-            <RouterLink class="sh-link" :to="{name: 'Admin'}">Модерация</RouterLink>
+            <RouterLink class="sh-link tab-link-wr" :active="R().meta.nest == 'AFeedback' || null" :to="{name: 'AFeedback'}"><span class="tab-link">Обратная связь</span></RouterLink>
+            <RouterLink class="sh-link tab-link-wr" :active="R().meta.nest == 'Admin' || null" :to="{name: 'Admin'}"><span class="tab-link">Модерация</span></RouterLink>
             <a class="sh-link" @click="A().exit()">Выйти</a>
         </div>
 

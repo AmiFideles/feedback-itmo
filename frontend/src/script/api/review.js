@@ -8,4 +8,10 @@ export default {
             {comment, contact}
         )
     },
+    getList(){
+        return sendAPI(
+            'get',
+            `/site-review/`,
+        )
+    },
 }

@@ -17,11 +17,11 @@
             <div class="form pre-success" :show="!success || null">
                 <div class="inp-wr">
                     <div class="title">Комментарий по&nbsp;проекту или&nbsp;лендингу</div>
-                    <VTextarea/>
+                    <VTextarea v-model="data.comment"/>
                 </div>
                 <div class="inp-wr">
                     <div class="title">Контакты для связи (необязательно)</div>
-                    <VTextInput/>
+                    <VTextInput v-model="data.contact"/>
                 </div>
             </div>
             
@@ -61,8 +61,8 @@
 
         await reviewAPI
         .add(
-            data.comment,
-            data.contact
+            data.value.comment,
+            data.value.contact
         )
         .catch(error => {
             err = error.message || error; 
@@ -75,6 +75,8 @@
             reset();
         }
     }
+
+    
 </script>
 
 <style lang="scss" scoped>

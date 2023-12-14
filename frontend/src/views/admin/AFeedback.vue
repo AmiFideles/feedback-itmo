@@ -7,17 +7,15 @@
                         <IReload/>
                     </div>
                 </div>
-                
-                <RouterLink class="sh-link tab-link" :active="R().route.name == 'Admin' || null" :to="{name: 'Admin'}">Новые</RouterLink>
-                <RouterLink class="sh-link tab-link" :active="R().route.name == 'AAllList' || null" :to="{name: 'AAllList'}">Все</RouterLink>
             </div>
-            <LettersPag admin ref="pagRef"/>
+            <FeedbackPag admin ref="pagRef"/>
         </div>
     </div>
 </template>
 
 <script setup>
-    import LettersPag from "@/components/letter/LettersPag.vue";
+    import FeedbackPag from "@/components/feedback/FeedbackPag.vue";
+
     import IReload from "@/components/icons/IReload.vue";
 
     import R from "@/stores/Router.js"

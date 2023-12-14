@@ -122,3 +122,27 @@ ul{
         filter: drop-shadow(0rem 0rem 0 transparent);
     }
 }
+
+.tab-link, .tab-link-wr{
+    position: relative;
+    display: block;
+
+    &:not(.tab-link-wr)::after{
+        @include pseudo-absolute;
+        bottom: -.2rem;
+        left: 0;
+        height: .2rem;
+        width: 0;
+        background: var(--c-black);
+        transition: .3s;
+    }
+
+    &[active]{
+        &, .tab-link{
+            &::after{
+                width: 100%;
+            }
+        }
+        
+    }
+}

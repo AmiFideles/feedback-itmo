@@ -58,7 +58,7 @@
     import Lighthouse from "@/components/home/Lighthouse.vue";
     import LettersCarousel from "@/components/letter/LettersCarousel.vue";
     import VideosCarousel from "@/components/home/VideosCarousel.vue";
-    import FeedbackModal from "@/components/home/FeedbackModal.vue";
+    import FeedbackModal from "@/components/feedback/FeedbackModal.vue";
 
     import R from "@/stores/Router.js";
     import Static from "@/stores/Static.js";

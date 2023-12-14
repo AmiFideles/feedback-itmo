@@ -4,6 +4,7 @@ import Home from '@/views/Home.vue';
 import List from '@/views/List.vue';
 
 import Admin from '@/views/admin/Admin.vue';
+import AFeedback from '@/views/admin/AFeedback.vue';
 
 const routes = [
     {
@@ -30,13 +31,19 @@ const routes = [
         path: '/admin',
         name: 'Admin',
         component: Admin,
-        meta: {admin: true}
+        meta: {admin: true, nest: 'Admin'}
     },
     {
         path: '/admin/all',
         name: 'AAllList',
         component: Admin,
-        meta: {admin: true}
+        meta: {admin: true, nest: 'Admin'}
+    },
+    {
+        path: '/admin/feedback',
+        name: 'AFeedback',
+        component: AFeedback,
+        meta: {admin: true, nest: 'AFeedback'}
     },
 ]
 

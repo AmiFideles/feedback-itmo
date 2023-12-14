@@ -1,21 +1,26 @@
 <template>
     <div class="letters">
         <div class="letters-container">
-            <LCard v-for="(i,k) in list" :key="k" :info="i" :list="list" :offset="offset" :admin="admin"/>
+            <FeedbackCard v-for="(i,k) in list" :key="k" :info="i" @call="modal.call(i)"/>
         </div>
 
         <VErr :err="err"/>
         <div class="loader" v-if="!stop"><VLoading/></div>
         <h3 v-else-if="!err && !list.length">Список пуст</h3>
+
+        <FeedbackModalRead ref="modal"/>
     </div>
 </template>
 
 <script setup>
+    import FeedbackCard from "@/components/feedback/FeedbackCard.vue";
+    import FeedbackModalRead from "@/components/feedback/FeedbackModalRead.vue";
+
     import LCard from "@/components/letter/LCard.vue";
 
     import R from "@/stores/Router.js";
-
-    import { feedbackAPI } from "@/script/api";
+    
+    import { reviewAPI } from "@/script/api";
     
     import { onMounted, onUnmounted, ref, watch } from "vue";
 
@@ -40,29 +45,17 @@
         setTimeout(checkPag);
     }
 
-    onMounted(()=>{
-        reset();
-    });
-    watch(()=>R().query.filters, reset);
-    watch(()=>R().route.name, reset);
+    onMounted(reset);
 
     onMounted(()=>{(document.body).addEventListener('scroll', checkPag);});
     onUnmounted(()=>(document.body).removeEventListener('scroll', checkPag));
 
-
     const paginate = async ()=>{
         err.value = '';
 
-        let res = await feedbackAPI.getList(
-            !props.admin?
-                'approved':
-            R().route.name == 'AAllList'?
-                'all':
-                'notModerated',
-            offset.value, 
-            15, 
-            R().parseQuery('filters')
-        ).catch(error => {
+        let res = await reviewAPI
+        .getList()
+        .catch(error => {
             err.value = error;
         });
 
@@ -96,8 +89,9 @@
         }
     }
 
-    defineExpose({reset})
-
+    defineExpose({reset});
+        
+    const modal = ref();
 
 </script>
 
