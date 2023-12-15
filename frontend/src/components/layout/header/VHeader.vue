@@ -4,6 +4,7 @@
             <img src="/logo.png" class="image"/>
         </RouterLink>
         <div class="links" v-if="!isAdmin" :drop="drop || null" @click="drop = false">
+            <a class="sh-link" @click="R().pushQuery({aboutModal: 'true'})">О&nbsp;проекте</a>
             <a class="sh-link" @click="R().pushQuery({infoModal: 'true'})">Инструкция</a>
             <a class="sh-link" @click="R().pushQuery({lsend: 'true'})">Оставить послание</a>
         </div>

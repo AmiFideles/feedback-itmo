@@ -97,6 +97,8 @@
 <script setup>
     import { computed, ref, watch } from 'vue';
 
+    import { incline } from 'lvovich';
+
     import R from "@/stores/Router.js";
     import Static from "@/stores/Static.js";
     
@@ -115,10 +117,10 @@
         if(n){
             success.value = false;
             data.value = {
-                name: {title: "Ваши имя и фамилия", value: ""},
+                name: {title: "Ваши фамилия и имя", value: ""},
                 graduationYear: {title: "Год выпуска", value: years.value[0], list: years.value},
                 faculty: {title: "Ваше подразделение в ИТМО", value: ""},
-                mentorName: {title: "Имя и фамилия адресата", value: ""},
+                mentorName: {title: "ФИО адресата", value: ""},
                 mentorEmail: {title: "Email адресата", value: ""},
                 messageText: {title: "Текст послания", value: ""},
                 prompt: {title: "Выберите послание", value: null, list: prompts},
@@ -131,6 +133,7 @@
     })
 
     const years = computed(()=>[
+        {name: 'Не выпускник ИТМО', value: null},
         ...Array.from(moment.range('1900', new Date()).by('year')).map(m => {return {name: m.format('YYYY'), value: m.format('YYYY')}}).reverse()
     ]);
 
@@ -162,9 +165,9 @@
         const getValue = (key) =>data.value[key].value;
 
         let toSend = {
-            "lastName": getValue('name').split(' ')[1],
-            "firstName": getValue('name').split(' ')[0],
-            "graduationYear": parseInt(getValue('graduationYear').value),
+            "lastName": getValue('name').split(' ')[0],
+            "firstName": getValue('name').split(' ')[1],
+            "graduationYear": parseInt(getValue('graduationYear').value) || getValue('graduationYear').value,
             "faculty": getValue('faculty'),
             "mentorName": getValue('mentorName'),
             "messageText": getValue('messageText') + (getValue('prompt')?.value?`\n\n${getValue('prompt').value}`:''),
@@ -172,7 +175,7 @@
             "color": activeColor.value.id
         }
 
-        if(!toSend.firstName)err.value = 'Заполните имя';
+        // if(!toSend.firstName)err.value = 'Заполните имя';
         if(!toSend.mentorName)err.value = 'Заполните ФИО адресата';
         if(!toSend.messageText)err.value = 'Оставьте послание';
         if(toSend.mentorEmail && !validateEmail(toSend.mentorEmail))err.value = 'Неверный Email';
@@ -181,6 +184,8 @@
             loading.value = false;
             return;
         }
+
+        toSend.mentorName = inclineName(toSend.mentorName);
 
         let res = await feedbackAPI.add(toSend).catch(
             error => err.value = error.message || error
@@ -191,6 +196,12 @@
         if(!err.value){
             success.value = true;
         }
+    }
+
+    const inclineName = (name)=>{
+        let split = name.split(' ');
+        let res = incline(Object.assign({ first: split[1], last: split[0] }, split[2] && {middle: split[2]}), 'dative')
+        return `${res.last} ${res.first}${res.middle?' '+res.middle:''}`;
     }
 
 //close

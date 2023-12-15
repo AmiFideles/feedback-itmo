@@ -19,6 +19,7 @@
 
             <VFooter/>
 
+            <AboutModal/>
             <InstructionModal/>
             <LModal/>
             <LSendModal/>
@@ -29,6 +30,7 @@
 <script setup>
     import VHeader from "@/components/layout/header/VHeader.vue";
     import VFooter from "@/components/layout/VFooter.vue";
+    import AboutModal from "@/components/about/AboutModal.vue";
     import InstructionModal from "@/components/instruction/InstructionModal.vue";
     import LModal from "@/components/letter/LModal.vue";
     import LSendModal from "@/components/letter/LSendModal.vue";
