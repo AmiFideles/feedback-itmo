@@ -18,4 +18,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     Page<Feedback> findByStatusOrderByDateTimeDesc(FeedbackStatus feedbackStatus, Pageable pageable);
 
     Page<Feedback> findAll(Specification<Feedback> specification, Pageable pageable);
+
+    Long countFeedbackByStatus(FeedbackStatus feedbackStatus);
 }
