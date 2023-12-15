@@ -38,10 +38,12 @@ export default {
             data
         )
     },
-    setStatus(id, feedbackStatus){
+    change(data){
         return sendAPI(
             'put',
-            `/moderator/status/${id}?feedbackStatus=${feedbackStatus}`,
+            `/moderator/feedback/`,
+            data,
+            {query: true}
         )
     },
 }

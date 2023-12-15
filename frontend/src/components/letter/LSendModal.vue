@@ -165,8 +165,8 @@
         const getValue = (key) =>data.value[key].value;
 
         let toSend = {
-            "lastName": getValue('name').split(' ')[0],
-            "firstName": getValue('name').split(' ')[1],
+            "lastName": getValue('name').split(' ')[1]?getValue('name').split(' ')[0]:null,
+            "firstName": getValue('name').split(' ')[1] || getValue('name').split(' ')[0],
             "graduationYear": parseInt(getValue('graduationYear').value) || getValue('graduationYear').value,
             "faculty": getValue('faculty'),
             "mentorName": getValue('mentorName'),
@@ -175,7 +175,7 @@
             "color": activeColor.value.id
         }
 
-        // if(!toSend.firstName)err.value = 'Заполните имя';
+        if(!toSend.firstName)err.value = 'Заполните имя';
         if(!toSend.mentorName)err.value = 'Заполните ФИО адресата';
         if(!toSend.messageText)err.value = 'Оставьте послание';
         if(toSend.mentorEmail && !validateEmail(toSend.mentorEmail))err.value = 'Неверный Email';

@@ -46,8 +46,20 @@
         loading.value = true;
         controlsErr.value = '';
 
+        let toSend = Object.assign(
+            {}, 
+            props.info, 
+            {status},
+            {
+                color: null,
+                dateTime: null,
+                graduationYear: null,
+                photoURL: null,
+            }
+        )
+
         await feedbackAPI
-            .setStatus(props.info.id, status)
+            .change(toSend)
             .catch(error => controlsErr.value = error.message || error);
         
         if(!controlsErr.value){

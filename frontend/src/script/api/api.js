@@ -18,7 +18,7 @@ export const sendAPI = (method, url, data, options)=>{
         }
     }
 
-    if(method.toLowerCase() == 'get'){
+    if(method.toLowerCase() == 'get' || options?.query){
         body.params = data;
     }else{
         body.data = data;

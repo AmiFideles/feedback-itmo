@@ -93,8 +93,6 @@
 
         offset.value++;
 
-        console.log(res);
-
         if(
             res.totalPages < offset.value || 
             !list || 
@@ -222,8 +220,20 @@
         loading.value = true;
         controlsErr.value = '';
 
+        let toSend = Object.assign(
+            {}, 
+            info.value, 
+            {status},
+            {
+                color: null,
+                dateTime: null,
+                graduationYear: null,
+                photoURL: null,
+            }
+        )
+
         await feedbackAPI
-            .setStatus(id.value, status)
+            .change(toSend)
             .catch(error => controlsErr.value = error.message || error);
         
         if(!controlsErr.value){
