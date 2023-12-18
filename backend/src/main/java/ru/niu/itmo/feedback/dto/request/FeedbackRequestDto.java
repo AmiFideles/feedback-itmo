@@ -13,7 +13,6 @@ public class FeedbackRequestDto {
     @NotNull(message = "firstName id required")
     private String firstName;
     private String lastName;
-    @NotNull(message = "Graduation year is required")
     private Integer graduationYear;
     private String faculty;
     @NotNull(message = "Mentor name is required")

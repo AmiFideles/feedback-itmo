@@ -22,7 +22,7 @@ public class Feedback {
 
     private String lastName;
 
-    @NotNull(message = "Graduation year is required")
+    @Column(nullable = true)
     private Integer graduationYear;
 
     private String faculty;
