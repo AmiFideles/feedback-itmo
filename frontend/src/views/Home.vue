@@ -69,7 +69,7 @@
 
     const team = computed(() => [
         {href: "https://expert.itmo.ru/", img: "/img/team/3.png", h: "3.5rem"},
-        {href: "https://be.itmo.ru/", img: "/img/team/0.png", h: "8.7rem"},
+        {href: "https://be.itmo.ru/", img: "/img/team/0.svg", h: "8.7rem"},
         {href: "https://news.itmo.ru/ru/university_live/social_activity/news/13259/", img: "/img/team/1.png", h: "8.7rem"},
         {href: "https://alumni.itmo.ru/", img: "/img/team/2.png", h: "3.5rem"},
     ]);

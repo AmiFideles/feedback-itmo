@@ -4,11 +4,12 @@
         v-model="text"  
         :rows="rows"
         oninput="this.style.height = ''; this.style.height = (this.scrollHeight) +'px'"
+        ref="inp"
     />
 </template>
 
 <script setup>
-    import { ref, watch } from "vue";
+    import { onMounted, ref, watch } from "vue";
 
     const props = defineProps({
         modelValue: [String, Number],
@@ -43,6 +44,11 @@
         )
     });
     watch(()=>props.modelValue, (n)=>text.value = n);
+
+    onMounted(()=>{
+        inp.value.style.height = ''; 
+        inp.value.style.height = (inp.value.scrollHeight) +'px'
+    });
 </script>
 
 <style lang="scss" scoped>

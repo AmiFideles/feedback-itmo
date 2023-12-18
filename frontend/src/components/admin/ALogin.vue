@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <div class="form cas-wr">
+        <div class="form cas-wr cas-wr-primary">
             <h2>Вход в систему</h2>
             <div class="title">Логин</div>
             <VTextInput v-model="data.username" @keydown.enter="passwInp.focus()"/>

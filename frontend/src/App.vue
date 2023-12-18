@@ -22,6 +22,7 @@
             <AboutModal/>
             <InstructionModal/>
             <LModal/>
+            <LAdminModal/>
             <LSendModal/>
         </template>
     </div>
@@ -33,6 +34,7 @@
     import AboutModal from "@/components/about/AboutModal.vue";
     import InstructionModal from "@/components/instruction/InstructionModal.vue";
     import LModal from "@/components/letter/LModal.vue";
+    import LAdminModal from "@/components/letter/LAdminModal.vue";
     import LSendModal from "@/components/letter/LSendModal.vue";
 
     import ALogin from "@/components/admin/ALogin.vue";

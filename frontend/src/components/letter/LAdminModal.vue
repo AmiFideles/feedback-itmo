@@ -4,37 +4,66 @@
         class="l-modal" 
         @close="close"
         :style="{
-            '--sh': currentColor?.color
+            '--sh': currentColor?.color,
+            '--bg': editMode?currentColor?.light:'var(--c-white)'
         }"
-    >
+    >   
         <template #title>
             <div class="name-wr" :show="!fade || null">
                 <h2>{{info?.mentorName}}</h2>
             </div>
         </template>
 
-        
-        <div class="sender" :show="!fade || null">
-            <p v-if="info?.firstName">от: {{info.firstName}} {{info.lastName}}</p>
-        </div>
+        <template v-if="!editMode">
+            <div class="sender" :show="!fade || null">
+                <p v-if="info?.firstName">от: {{info.firstName}} {{info.lastName}}</p>
+            </div>
 
-        <div class="content">
-            <div class="loader-wr" :show="fade || null">
-                <VLoading/>
+            <div class="content">
+                <div class="loader-wr" :show="fade || null">
+                    <VLoading/>
+                </div>
+                <div class="content-container" :show="!fade || null">
+                    <p>{{err || info?.messageText}}</p>
+                </div>
             </div>
-            <div class="content-container" :show="!fade || null">
-                <p>{{err || info?.messageText}}</p>
+        </template>
+
+        <template v-else>
+            <div class="content form" v-if="info">
+                <div class="title">Ваши фамилия и имя</div>
+                <div class="flex-inp-wr">
+                    <VTextInput v-model="info.lastName"/>
+                    <VTextInput v-model="info.firstName"/>
+                </div>
+                <div class="title">Ваше подразделение в ИТМО</div>
+                <VTextInput v-model="info.faculty"/>
+                <div class="title">Кому адресовано послание?</div>
+                <VTextInput v-model="info.mentorName"/>
+                <div class="title">Email адресата</div>
+                <VTextInput v-model="info.mentorEmail"/>
+                <div class="title">Текст послания</div>
+                <VTextarea v-model="info.messageText"/>
             </div>
-        </div>
+        </template>
+
+
+        
+        <VErr :err="controlsErr"/>
         <div class="controls-wr">
             <div class="controls">
-                <VButton 
-                    @click="R().pushQuery({lsend: 'true'})"
-                    :style="{
-                        '--bg': currentColor?.color,
-                        '--hov': currentColor?.light
-                    }"
-                >Оставить послание</VButton>
+                <div class="btns">
+                    <VButton class="edit" @click="edit" :active="editMode || null" :loading="loading || null">
+                        <IPencil v-if="!editMode"/>
+                        <span v-else>✓</span>
+                    </VButton>
+                    <VButton class="REJECT" @click="setStatus('REJECTED')" :active="info?.status == 'REJECTED' || null" :loading="loading || null">
+                        ╳
+                    </VButton>
+                    <VButton class="APPROVE" @click="setStatus('APPROVED')" :active="info?.status == 'APPROVED' || null" :loading="loading || null">
+                        ✓
+                    </VButton>
+                </div>
                 <SliderArrows
                     no-shrink
                     @next="move(1)"
@@ -49,6 +78,8 @@
     import { computed, onMounted, ref, watch } from 'vue';
     import SliderArrows from "@/components/ui/SliderArrows.vue";
 
+    import IPencil from "@/components/icons/IPencil.vue";
+
     import R from "@/stores/Router.js";
     import Static from "@/stores/Static.js";
 
@@ -58,7 +89,7 @@
 
     const idList = ref([]);
 
-    const id = computed(()=>R().query?.l);
+    const id = computed(()=>R().query?.lAdmin);
 
 // list
     const loop = ref(false);
@@ -66,7 +97,9 @@
 
     const updateList = async (v=1)=>{
         let res = await feedbackAPI.getList(
-            'approved',
+            R().route.name == 'AAllList'?
+                'all':
+                'notModerated',
             offset.value, 
             15, 
             R().parseQuery('filters')
@@ -102,10 +135,12 @@
         return new Promise(
             (res)=>setTimeout(
                 ()=>{
+                    loading.value = false;
+                    controlsErr.value = '';
                     info.value = null;
                     res(true);
                 }, 
-                111
+                101
             ));
     } 
 
@@ -120,6 +155,8 @@
             }
         );
 
+        console.log(info.value)
+
         currentColor.value = Static().getColor(info.value?.color || 1)
 
         setTimeout(()=>fade.value = false);
@@ -127,6 +164,8 @@
 
     const init = (n,o)=>{
         // console.log(n,o);
+        editMode.value = false;
+
         if(o && n){
             updateInfo();
             return;
@@ -146,7 +185,7 @@
                     idList.value,
                     offset.value
                 )
-                R().pushQuery({l: n, larr: null, offset: null});
+                R().pushQuery({lAdmin: n, larr: null, offset: null});
             }else{
                 idList.value = [n];
             }
@@ -171,13 +210,13 @@
 
         if(localId+v == -1 || localId+v == idList.value.length){
             if(loop.value){
-                R().pushQuery({l: idList.value[v == 1?0:idList.value.length -1]});
+                R().pushQuery({lAdmin: idList.value[v == 1?0:idList.value.length -1]});
                 if(idList.value.length == 1)updateInfo();
                 return;
             }
 
             if(!await updateList(v)){
-                R().pushQuery({l: idList.value[v == 1?0:idList.value.length -1]});
+                R().pushQuery({lAdmin: idList.value[v == 1?0:idList.value.length -1]});
                 updateInfo();
                 return;
             }
@@ -185,11 +224,81 @@
 
         localId = idList.value.indexOf(id.value);
         
-        R().pushQuery({l: idList.value[localId == null?0:localId + v]});
+        R().pushQuery({lAdmin: idList.value[localId == null?0:localId + v]});
     }
 
 //color
     const currentColor = ref();
+
+//admin
+    const loading = ref();
+    const controlsErr = ref();
+
+    const setStatus = async (status)=>{
+        loading.value = true;
+        controlsErr.value = '';
+
+        let toSend = Object.assign(
+            {}, 
+            info.value, 
+            {status},
+            {
+                color: null,
+                dateTime: null,
+                graduationYear: null,
+                photoURL: null,
+            }
+        )
+
+        await feedbackAPI
+            .change(toSend)
+            .catch(error => controlsErr.value = error.message || error);
+        
+        if(!controlsErr.value){
+            info.value.status = status;
+        }
+
+        loading.value = false;
+    }
+
+//edit
+    const editMode = ref(false);
+
+    // const editBcp = ref();
+
+    // watch(editMode, (n)=>{
+    //     if(n)editBcp.value = JSON.parse(JSON.stringify(info.value));
+    // });
+
+    const edit = async ()=>{
+        editMode.value = !editMode.value;
+
+        if(editMode.value)return;
+
+        loading.value = true;
+        controlsErr.value = '';
+
+        let toSend = Object.assign(
+            {}, 
+            info.value,
+            {
+                color: null,
+                dateTime: null,
+                graduationYear: null,
+                photoURL: null,
+            }
+        )
+
+        await feedbackAPI
+            .change(toSend)
+            .catch(error => controlsErr.value = error.message || error);
+        
+        if(!controlsErr.value){
+            editMode.value = false
+        }
+
+        loading.value = false;
+    }
 
 //close
     const close = ()=>{
@@ -239,7 +348,7 @@
 
     .modal.l-modal :deep(.container){
         height: 100vh;
-        max-height: 70rem;
+        max-height: 90vh;
     }
 
     .content{
@@ -273,6 +382,34 @@
         }
     }
 
+    .form{
+        @include flex-col;
+        gap: 1.6rem;
+
+        padding-right: .8rem;
+
+        .input-wr, textarea{
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .title{
+            color: var(--c-grey-dark);
+            font-size: 1.4rem;
+            margin-bottom: -.8rem;
+        }
+
+        .flex-inp-wr{
+            display: flex;
+            gap: 1.6rem;
+
+            .input-wr{
+                flex-shrink: 1;
+                width: 100%;
+            }
+        }  
+    }
+
     .controls-wr{
         @include  flex-c;
 
@@ -295,7 +432,7 @@
 
                     border: .2rem solid var(--color);
 
-                    background: transparent;
+                    background: var(--c-white);
 
                     &[active]{
                         background: var(--color);
@@ -308,6 +445,19 @@
                     &.APPROVE{
                         --color: #adff59;
                         font-size: 2.8rem;
+                    }
+                    &.edit{
+                        --color: #437aff;
+                        color: var(--color);
+                        font-size: 2.8rem;
+
+                        svg{
+                            height: 75%;
+                        }
+
+                        &[active]{
+                            color: var(--c-white);
+                        }
                     }
                 }
             }
