@@ -97,7 +97,7 @@ public class ModeratorController {
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)}
     )
     @PutMapping("/feedback")
-    public ResponseEntity<Void> updateFeedback(
+    public ResponseEntity<Void> updateFeedback(@RequestBody
             UpdateFeedbackDto updateFeedbackDto) {
         feedbackService.updateFeedback(updateFeedbackDto);
         return ResponseEntity.ok().build();
