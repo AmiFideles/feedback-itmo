@@ -57,10 +57,10 @@
         // console.log(r.value.top,  windowHeight * domain + bump);
 
         if(r.value.top + document.querySelector('.ribbons-display .ribbons').offsetHeight > document.getElementById('app').offsetHeight)r.value.top = -1000000;
-        console.log(
-            r.value.top + document.querySelector('.ribbons-display .ribbons').offsetHeight, 
-            document.getElementById('app').offsetHeight
-        );
+        // console.log(
+        //     r.value.top + document.querySelector('.ribbons-display .ribbons').offsetHeight, 
+        //     document.getElementById('app').offsetHeight
+        // );
 
         //colors
             r.value.color = colors[domain%colors.length];
