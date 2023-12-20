@@ -50,7 +50,7 @@
         margin: 0 auto;
 
         .logo{
-            height: 11.2rem;
+            height: 9.2rem;
             z-index: 2;
 
             .image{
@@ -63,6 +63,7 @@
             display: flex;
             gap: calc(6.4rem - 2em);
             margin-right: -1em;
+            font-size: 2.4rem;
 
             .sh-link{
                 --sh-color: var(--c-orange);
@@ -139,13 +140,27 @@
 
         }
 
-        @media (max-width: $laptop){
+        @media (max-width: 1420px){
             .logo{
                 height: 5rem;
             }
+
+            .links{
+                font-size: 2rem;
+            }
         }
 
-        @media (max-width: $mobile-big) {
+        @media (max-width: 1120px){
+            .logo{
+                height: 4rem;
+            }
+
+            .links{
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 920px) {
             top: var(--generic-padding);
 
             .logo{
@@ -164,7 +179,6 @@
                 transition: .3s;
                 flex-direction: column;
                 gap: 0;
-                font-size: 2rem;
                 align-items: start;
 
                 a.sh-link{
@@ -187,7 +201,7 @@
         }
     }
 
-    @media (min-width: calc($mobile-big + 1px)) {
+    @media (min-width: calc(920px + 1px)) {
         [mob]{
             display: none;
         }

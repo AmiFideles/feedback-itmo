@@ -17,7 +17,7 @@
                 <h3>Спасибо!</h3>
                 <h3>Ваше послание будет опубликовано после модерации</h3>
             </div>
-            <div class="form" :show="!success || null">
+            <div class="form letter-text" :show="!success || null">
                 <div class="inp-wr" v-for="(i,k) in data" :key="k">
                     <div class="title">{{i.title}}</div>
                     <VTextarea 

@@ -2,18 +2,13 @@
     <div class="lighthouse">
         
         <div class="intro">
-            <h1>
-                Нет на&nbsp;свете излишества прекраснее, чем&nbsp;излишек благодарности
-            </h1>
+            <h1>Нет на&nbsp;свете излишества прекраснее, чем&nbsp;излишек благодарности</h1>
         </div>
 
         <div class="sprite-wr">
             <div class="sprite-wr-wr">
                 <img class="sprite" src="./lighthouse.svg" alt="">
                 <div class="spark"></div>
-                <!-- <div class="rays-wr">
-                    <img class="rays" src="./rays.svg" alt="">
-                </div> -->
                 <div class="ray-wr">
                     <img class="ray" src="./ray.svg" alt="">
                     <img class="ray" src="./ray.svg" alt="">
@@ -118,14 +113,13 @@
 
         .intro{
             width: 100%;
-            max-width: calc(85.2rem + 32vh);
             font-weight: 700;
             height: 100%;
             @include flex-c;
             padding-bottom: 5.2rem;
             position: relative;
             z-index: 1;
-            padding-right: 32vh;
+            padding-right: 40vh;
         }
 
         .ribbons{
@@ -138,6 +132,10 @@
 
             h1{
                 font-size: 4.4rem;
+            }
+
+            .intro{
+                padding-right: 20vh;
             }
         }
 

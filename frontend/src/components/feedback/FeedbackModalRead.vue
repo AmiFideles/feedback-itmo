@@ -6,12 +6,12 @@
     >
         <template #title>
             <div class="name-wr" :show="!fade || null">
-                <h2>{{info?.comment}}</h2>
+                <h2>{{info?.contact}}</h2>
             </div>
         </template>
         <div class="content">
             <div class="content-container" :show="!fade || null">
-                <p>{{info?.contact}}</p>
+                <p>{{info?.comment}}</p>
             </div>
         </div>
     </VModal>

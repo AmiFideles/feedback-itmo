@@ -21,3 +21,7 @@ export const round = (
 
     return `${numArr[0]}${fract?'.':''}${fract||''}`;
 }
+
+export const convertRemToPixels = (rem) => {    
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}

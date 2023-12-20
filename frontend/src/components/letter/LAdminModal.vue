@@ -16,7 +16,16 @@
 
         <template v-if="!editMode">
             <div class="sender" :show="!fade || null">
-                <p v-if="info?.firstName">от: {{info.firstName}} {{info.lastName}}</p>
+                <p class="letter-text" v-if="info?.firstName">от: {{info.firstName}} {{info.lastName}}</p>
+            </div>
+            <div class="sender" :show="!fade || null">
+                <p class="letter-text" v-if="info?.firstName">Подразделение: {{info.faculty}}</p>
+            </div>
+            <div class="sender" :show="!fade || null">
+                <p class="letter-text" v-if="info?.firstName">Год выпуска: {{info.graduationYear || 'Не выпускник(-ца) ИТМО'}}</p>
+            </div>
+            <div class="sender" :show="!fade || null">
+                <p class="letter-text" v-if="info?.firstName">Email наставника: {{info.mentorEmail}}</p>
             </div>
 
             <div class="content">
@@ -24,13 +33,13 @@
                     <VLoading/>
                 </div>
                 <div class="content-container" :show="!fade || null">
-                    <p>{{err || info?.messageText}}</p>
+                    <p class="letter-text">{{err || info?.messageText}}</p>
                 </div>
             </div>
         </template>
 
         <template v-else>
-            <div class="content form" v-if="info">
+            <div class="content form letter-text" v-if="info">
                 <div class="title">Ваши фамилия и имя</div>
                 <div class="flex-inp-wr">
                     <VTextInput v-model="info.lastName"/>

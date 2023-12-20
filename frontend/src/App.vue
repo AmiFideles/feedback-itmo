@@ -2,6 +2,8 @@
     <div class="global-wr">
         <div class="backdrop"></div>
 
+        <VRibbonsDisplay/>
+
         <VHeader/>
 
         <template v-if="isAdmin && Admin.isLogged == null">
@@ -36,6 +38,7 @@
     import LModal from "@/components/letter/LModal.vue";
     import LAdminModal from "@/components/letter/LAdminModal.vue";
     import LSendModal from "@/components/letter/LSendModal.vue";
+    import VRibbonsDisplay from "@/components/ribbons/VRibbonsDisplay.vue";
 
     import ALogin from "@/components/admin/ALogin.vue";
 
@@ -94,7 +97,7 @@
         &::before{
             @include pseudo;
             width: 100%;
-            height: 150vh;
+            height: 200vh;
             background: var(--gr-background);
         }
     }

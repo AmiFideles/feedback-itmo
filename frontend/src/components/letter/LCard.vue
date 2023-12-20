@@ -4,10 +4,10 @@
             <p>{{info.mentorName}}</p>
         </div>
         <div class="name" v-if="info.firstName">
-            <p>от: {{info.firstName}} {{info.lastName}}</p>
+            <p class="letter-text">от: {{info.firstName}} {{info.lastName}}</p>
         </div>
         <div class="body">
-            <p>{{info.messageText}}</p>
+            <p class="letter-text">{{info.messageText}}</p>
         </div>
         <div class="link">
             <div class="btns" v-if="admin">

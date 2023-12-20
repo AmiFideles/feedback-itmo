@@ -15,7 +15,7 @@
 
         
         <div class="sender" :show="!fade || null">
-            <p v-if="info?.firstName">от: {{info.firstName}} {{info.lastName}}</p>
+            <p class="letter-text" v-if="info?.firstName">от: {{info.firstName}} {{info.lastName}}</p>
         </div>
 
         <div class="content">
@@ -23,7 +23,7 @@
                 <VLoading/>
             </div>
             <div class="content-container" :show="!fade || null">
-                <p>{{err || info?.messageText}}</p>
+                <p class="letter-text">{{err || info?.messageText}}</p>
             </div>
         </div>
         <div class="controls-wr">

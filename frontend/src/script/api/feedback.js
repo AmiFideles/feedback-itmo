@@ -43,7 +43,7 @@ export default {
             'put',
             `/moderator/feedback/`,
             data,
-            {query: true}
+            // {query: true}
         )
     },
 }

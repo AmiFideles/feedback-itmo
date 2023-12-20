@@ -28,7 +28,7 @@
         
         <div class="about cas-wr">
             <p>Поделитесь с&nbsp;нами историями о&nbsp;ваших наставниках, напишите несколько слов благодарности, расскажите о&nbsp;том, кто стал для вас маяком, указавшим путь в&nbsp;большом плавании жизни</p>
-            <VButton big @click="R().pushQuery({lsend: 'true'})">Оставить послание</VButton>
+            <VButton med @click="R().pushQuery({lsend: 'true'})">Оставить послание</VButton>
         </div>
 
         <div class="vids-wr thin-wr about cas-wr">
@@ -94,7 +94,8 @@
         gap: 6.4rem;
 
         p{
-            font-size: 3.2rem;
+            font-size: 2.4rem;
+            max-width: 110rem;
             text-align: center;
         }
 
@@ -143,7 +144,7 @@
 
         P{
             text-align: left;
-            padding-right: var(--generic-padding);
+            padding-right: calc(var(--generic-padding) * 2);
         }
 
         @media (max-width: 1485px){
@@ -151,6 +152,7 @@
 
             p{
                 text-align: center;
+                padding-right: 0;
             }
         }
     }
