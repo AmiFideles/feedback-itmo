@@ -11,6 +11,6 @@ spring:
       ddl-auto: update
 accessTokenSecret: testAccessTokenSecret
 refreshTokenSecret: testRefreshTokenSecret
-accessTokenExpirationMinutes: 1
+accessTokenExpirationMinutes: 60
 refreshTokenExpirationDays: 2
 upload-dir: src/main/resources/static

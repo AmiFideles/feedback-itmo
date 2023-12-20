@@ -96,7 +96,7 @@ public class FeedbackController {
         if (cookie.isEmpty()) {
             seed = seedService.getRandomSeed();
             Cookie cookie1 = new Cookie("seed", String.valueOf(seed));
-            cookie1.setMaxAge(120);
+            cookie1.setMaxAge(120*10);
             response.addCookie(cookie1);
         } else {
             seed = Integer.parseInt(cookie.get());
