@@ -44,6 +44,7 @@
     .login{
         @include flex-col;
         padding: 10rem 0;
+        min-height: 100vh;
 
         .form{
             width: 100%;

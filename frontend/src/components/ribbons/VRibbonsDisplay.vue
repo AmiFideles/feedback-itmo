@@ -13,7 +13,7 @@
     onMounted(()=>{
         (document.body).addEventListener('scroll', update);
         window.addEventListener('resize', update);
-        update();
+        setTimeout(update, 1);
     });
     onUnmounted(()=>{
         (document.body).removeEventListener('scroll', update);
@@ -54,9 +54,8 @@
 
         r.value.top = windowHeight * dRatio * domain + bump;
 
-        // console.log(r.value.top,  windowHeight * domain + bump);
-
         if(r.value.top + document.querySelector('.ribbons-display .ribbons').offsetHeight > document.getElementById('app').offsetHeight)r.value.top = -1000000;
+        
         // console.log(
         //     r.value.top + document.querySelector('.ribbons-display .ribbons').offsetHeight, 
         //     document.getElementById('app').offsetHeight

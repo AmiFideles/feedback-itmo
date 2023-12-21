@@ -19,14 +19,14 @@
                 </Transition>
             </RouterView>
 
-            <VFooter/>
-
             <AboutModal/>
             <InstructionModal/>
             <LModal/>
             <LAdminModal/>
             <LSendModal/>
         </template>
+
+        <VFooter/>
     </div>
 </template>
 
