@@ -98,23 +98,27 @@ public class FeedbackService {
     }
 
     public Page<FeedbackResponseDto> getNotModeratedFeedback(Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findByStatusOrderByDateTimeDesc(FeedbackStatus.NOT_MODERATED, pageable);
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatus(FeedbackStatus.NOT_MODERATED, pageable);
         return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
     public Page<FeedbackResponseDto> getAll(FeedbackStatus feedbackStatus, Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findByStatusOrderByDateTimeDesc(feedbackStatus, pageable);
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatus(feedbackStatus, pageable);
         return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
     public Long getTotalFeedbackCount() {
         return feedbackRepository.countFeedbackByStatus(FeedbackStatus.APPROVED);
-//        return feedbackRepository.count();
     }
 
     public Page<FeedbackResponseDto> getAllFeedback(Pageable pageable) {
         Page<Feedback> all = feedbackRepository.findAll(pageable);
         return all.map(FeedbackMapper.INSTANCE::toResponseDto);
+    }
+
+    public Page<FeedbackResponseDto> getSortedFeedbackByStatus(FeedbackStatus feedbackStatus, Pageable pageable) {
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatus(feedbackStatus, pageable);
+        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
     public Page<FeedbackResponseDto> getFeedback(String faculty, Integer graduationYear, Integer seed, Pageable pageable) {

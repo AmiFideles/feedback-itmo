@@ -13,9 +13,7 @@ import ru.niu.itmo.feedback.entity.FeedbackStatus;
  */
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
-    Page<Feedback> findAllByOrderByDateTimeDesc(Pageable pageable);
-
-    Page<Feedback> findByStatusOrderByDateTimeDesc(FeedbackStatus feedbackStatus, Pageable pageable);
+    Page<Feedback> findByStatus(FeedbackStatus feedbackStatus, Pageable pageable);
 
     Page<Feedback> findAll(Specification<Feedback> specification, Pageable pageable);
 

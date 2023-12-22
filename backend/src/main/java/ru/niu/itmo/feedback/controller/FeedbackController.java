@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.niu.itmo.feedback.dto.request.FeedbackRequestDto;
 import ru.niu.itmo.feedback.dto.response.ErrorResponseDto;
 import ru.niu.itmo.feedback.dto.response.FeedbackResponseDto;
+import ru.niu.itmo.feedback.entity.FeedbackStatus;
 import ru.niu.itmo.feedback.service.FeedbackService;
 import ru.niu.itmo.feedback.service.SeedService;
 
@@ -68,41 +71,37 @@ public class FeedbackController {
         return ResponseEntity.ok(feedbackResponseDto);
     }
 
-
-//    @GetMapping("/approved")
-//    @Operation(summary = "Get a paginated and sorted page of filtered and approved feedback.", description = "This endpoint returns a paginated and sorted page of feedback with optional filtering by graduation year and faculty.")
-//    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved feedback page.", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FeedbackResponseDto.class)))),})
-//    public ResponseEntity<Page<FeedbackResponseDto>> getFilteredAndApprovedFeedback(@Parameter(description = "Graduation year for filtering.") @RequestParam(required = false) Integer graduationYear, @Parameter(description = "Faculty for filtering.") @RequestParam(required = false) String faculty, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable, HttpServletResponse response, HttpServletRequest request) {
-//        Optional<String> cookie = readCookie(request.getCookies());
-//        int seed = 0;
-//        if (cookie.isEmpty()) {
-//            seed = seedService.getRandomSeed();
-//            Cookie cookie1 = new Cookie("seed", String.valueOf(seed));
-//            cookie1.setMaxAge(120);
-//            response.addCookie(cookie1);
-//        } else {
-//            seed = Integer.parseInt(cookie.get());
-//        }
-//        Page<FeedbackResponseDto> feedbackPage = feedbackService.getFilteredAndApprovedFeedback(graduationYear, faculty, pageable, seed);
-//        return ResponseEntity.ok(feedbackPage);
-//    }
-
     @GetMapping("/approved")
     @Operation(summary = "Get a paginated and sorted page of filtered and approved feedback.", description = "This endpoint returns a paginated and sorted page of feedback with optional filtering by graduation year and faculty.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved feedback page.", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FeedbackResponseDto.class)))),})
     public ResponseEntity<Page<FeedbackResponseDto>> getFilteredAndApprovedFeedback(@Parameter(description = "Graduation year for filtering.") @RequestParam(required = false) Integer graduationYear, @Parameter(description = "Faculty for filtering.") @RequestParam(required = false) String faculty, @PageableDefault(page = 0, size = 10) Pageable pageable, HttpServletResponse response, HttpServletRequest request) {
-        Optional<String> cookie = readCookie(request.getCookies());
-        int seed = 0;
-        if (cookie.isEmpty()) {
-            seed = seedService.getRandomSeed();
-            Cookie cookie1 = new Cookie("seed", String.valueOf(seed));
-            cookie1.setMaxAge(120*10);
-            response.addCookie(cookie1);
-        } else {
-            seed = Integer.parseInt(cookie.get());
+        Sort sort = pageable.getSort();
+
+        if (sort.isSorted()) {
+            for (Sort.Order order : sort) {
+                if ("dateTime".equals(order.getProperty())) {
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "dateTime"));
+                }
+            }
         }
-        Page<FeedbackResponseDto> feedbackPage = feedbackService.getFeedback(faculty, graduationYear, seed, pageable);
-        return ResponseEntity.ok(feedbackPage);
+
+        if (sort == Sort.unsorted()) {
+            Optional<String> cookie = readCookie(request.getCookies());
+            int seed = 0;
+            if (cookie.isEmpty()) {
+                seed = seedService.getRandomSeed();
+                Cookie cookie1 = new Cookie("seed", String.valueOf(seed));
+                cookie1.setMaxAge(120 * 10);
+                response.addCookie(cookie1);
+            } else {
+                seed = Integer.parseInt(cookie.get());
+            }
+            Page<FeedbackResponseDto> feedbackPage = feedbackService.getFeedback(faculty, graduationYear, seed, pageable);
+            return ResponseEntity.ok(feedbackPage);
+        } else {
+            Page<FeedbackResponseDto> feedbackPage = feedbackService.getSortedFeedbackByStatus(FeedbackStatus.APPROVED, pageable);
+            return ResponseEntity.ok(feedbackPage);
+        }
     }
 
     private Optional<String> readCookie(Cookie[] cookies) {
