@@ -4,7 +4,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,9 +124,23 @@ public class FeedbackService {
     }
 
     public Page<FeedbackResponseDto> getFeedback(String faculty, Integer graduationYear, Integer seed, Pageable pageable) {
-        Specification<Feedback> specification = FeedbackSpecifications.buildSpecification(faculty, graduationYear, seed);
+        Sort sort = pageable.getSort();
+        Specification<Feedback> specification;
+        if (sort.isSorted()) {
+            Optional<Sort.Order> dateTimeOrder = sort.stream()
+                    .filter(order -> "dateTime".equals(order.getProperty()))
+                    .findFirst();
 
-        Page<Feedback> resultPage = feedbackRepository.findAll(specification, pageable);
+            if (dateTimeOrder.isPresent()) {
+                sort = Sort.by(Sort.Direction.DESC, "dateTime");
+            }
+
+            specification = FeedbackSpecifications.buildSpecification(faculty, graduationYear);
+        } else {
+            specification = FeedbackSpecifications.buildSpecificationWithSeed(faculty, graduationYear, seed);
+        }
+
+        Page<Feedback> resultPage = feedbackRepository.findAll(specification, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
         return resultPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
