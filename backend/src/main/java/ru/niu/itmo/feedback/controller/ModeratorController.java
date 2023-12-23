@@ -26,28 +26,6 @@ import static ru.niu.itmo.feedback.configuration.SwaggerConfiguration.BEARER_KEY
 public class ModeratorController {
     private final FeedbackService feedbackService;
 
-//    @ApiResponse(responseCode = "401", description = "unauthorized")
-//    @ApiResponse(responseCode = "403", description = "access is denied")
-//    @Operation(
-//            summary = "Update feedback status",
-//            description = "Update the status of a feedback entry by providing its ID and the new status",
-//            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)}
-//    )
-//
-//    @ApiResponse(responseCode = "401", description = "unauthorized")
-//    @ApiResponse(responseCode = "403", description = "access is denied")
-//    @PutMapping("/status/{feedbackId}")
-//    public ResponseEntity<Void> updateFeedbackStatus(
-//            @PathVariable Long feedbackId,
-//            @RequestParam FeedbackStatus feedbackStatus) {
-//        Long updatedFeedbackId = feedbackService.updateFeedbackStatus(feedbackId, feedbackStatus);
-//
-//        if (updatedFeedbackId != null) {
-//            return ResponseEntity.ok().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @ApiResponse(responseCode = "401", description = "unauthorized")
     @ApiResponse(responseCode = "403", description = "access is denied")

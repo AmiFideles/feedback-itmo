@@ -68,25 +68,6 @@ public class FeedbackController {
         return ResponseEntity.ok(feedbackResponseDto);
     }
 
-
-//    @GetMapping("/approved")
-//    @Operation(summary = "Get a paginated and sorted page of filtered and approved feedback.", description = "This endpoint returns a paginated and sorted page of feedback with optional filtering by graduation year and faculty.")
-//    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved feedback page.", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FeedbackResponseDto.class)))),})
-//    public ResponseEntity<Page<FeedbackResponseDto>> getFilteredAndApprovedFeedback(@Parameter(description = "Graduation year for filtering.") @RequestParam(required = false) Integer graduationYear, @Parameter(description = "Faculty for filtering.") @RequestParam(required = false) String faculty, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable, HttpServletResponse response, HttpServletRequest request) {
-//        Optional<String> cookie = readCookie(request.getCookies());
-//        int seed = 0;
-//        if (cookie.isEmpty()) {
-//            seed = seedService.getRandomSeed();
-//            Cookie cookie1 = new Cookie("seed", String.valueOf(seed));
-//            cookie1.setMaxAge(120);
-//            response.addCookie(cookie1);
-//        } else {
-//            seed = Integer.parseInt(cookie.get());
-//        }
-//        Page<FeedbackResponseDto> feedbackPage = feedbackService.getFilteredAndApprovedFeedback(graduationYear, faculty, pageable, seed);
-//        return ResponseEntity.ok(feedbackPage);
-//    }
-
     @GetMapping("/approved")
     @Operation(summary = "Get a paginated and sorted page of filtered and approved feedback.", description = "This endpoint returns a paginated and sorted page of feedback with optional filtering by graduation year and faculty.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved feedback page.", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FeedbackResponseDto.class)))),})
@@ -96,7 +77,7 @@ public class FeedbackController {
         if (cookie.isEmpty()) {
             seed = seedService.getRandomSeed();
             Cookie cookie1 = new Cookie("seed", String.valueOf(seed));
-            cookie1.setMaxAge(120*10);
+            cookie1.setMaxAge(120 * 10);
             response.addCookie(cookie1);
         } else {
             seed = Integer.parseInt(cookie.get());

@@ -4,7 +4,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,18 +100,17 @@ public class FeedbackService {
     }
 
     public Page<FeedbackResponseDto> getNotModeratedFeedback(Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findByStatusOrderByDateTimeDesc(FeedbackStatus.NOT_MODERATED, pageable);
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatus(FeedbackStatus.NOT_MODERATED, pageable);
         return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
     public Page<FeedbackResponseDto> getAll(FeedbackStatus feedbackStatus, Pageable pageable) {
-        Page<Feedback> feedbackPage = feedbackRepository.findByStatusOrderByDateTimeDesc(feedbackStatus, pageable);
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatus(feedbackStatus, pageable);
         return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
     public Long getTotalFeedbackCount() {
         return feedbackRepository.countFeedbackByStatus(FeedbackStatus.APPROVED);
-//        return feedbackRepository.count();
     }
 
     public Page<FeedbackResponseDto> getAllFeedback(Pageable pageable) {
@@ -117,10 +118,29 @@ public class FeedbackService {
         return all.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
-    public Page<FeedbackResponseDto> getFeedback(String faculty, Integer graduationYear, Integer seed, Pageable pageable) {
-        Specification<Feedback> specification = FeedbackSpecifications.buildSpecification(faculty, graduationYear, seed);
+    public Page<FeedbackResponseDto> getSortedFeedbackByStatus(FeedbackStatus feedbackStatus, Pageable pageable) {
+        Page<Feedback> feedbackPage = feedbackRepository.findByStatus(feedbackStatus, pageable);
+        return feedbackPage.map(FeedbackMapper.INSTANCE::toResponseDto);
+    }
 
-        Page<Feedback> resultPage = feedbackRepository.findAll(specification, pageable);
+    public Page<FeedbackResponseDto> getFeedback(String faculty, Integer graduationYear, Integer seed, Pageable pageable) {
+        Sort sort = pageable.getSort();
+        Specification<Feedback> specification;
+        if (sort.isSorted()) {
+            Optional<Sort.Order> dateTimeOrder = sort.stream()
+                    .filter(order -> "dateTime".equals(order.getProperty()))
+                    .findFirst();
+
+            if (dateTimeOrder.isPresent()) {
+                sort = Sort.by(Sort.Direction.DESC, "dateTime");
+            }
+
+            specification = FeedbackSpecifications.buildSpecification(faculty, graduationYear);
+        } else {
+            specification = FeedbackSpecifications.buildSpecificationWithSeed(faculty, graduationYear, seed);
+        }
+
+        Page<Feedback> resultPage = feedbackRepository.findAll(specification, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
         return resultPage.map(FeedbackMapper.INSTANCE::toResponseDto);
     }
 
