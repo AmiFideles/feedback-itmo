@@ -40,10 +40,9 @@
         setTimeout(checkPag);
     }
 
-    onMounted(()=>{
-        reset();
-    });
+    onMounted(reset);
     watch(()=>R().query.filters, reset);
+    watch(()=>R().query.sort, reset);
     watch(()=>R().route.name, reset);
 
     onMounted(()=>{(document.body).addEventListener('scroll', checkPag);});
@@ -61,7 +60,8 @@
                 'notModerated',
             offset.value, 
             15, 
-            R().parseQuery('filters')
+            R().parseQuery('filters'),
+            R().query.sort,
         ).catch(error => {
             err.value = error;
         });

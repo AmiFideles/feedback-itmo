@@ -8,7 +8,7 @@
         </div>
 
         <div class="list-wr">
-            <div class="list">
+            <div class="list" ref="listRef">
                 <div 
                     class="list-item"
 
@@ -20,7 +20,9 @@
                         drop = false;
                     "
                 >
-                    {{keyName?i[keyName]:i}}
+                    <div class="list-item-content">
+                        {{keyName?i[keyName]:i}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,7 +30,7 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
 
     import IDrop from '@/components/icons/IDrop.vue';
 
@@ -44,6 +46,17 @@
     const emit = defineEmits(['update:modelValue']);
 
     const drop = ref(false);
+
+    const listRef = ref();
+
+    watch(drop, (n)=>{
+        if(!n){
+            setTimeout(
+                ()=>listRef.value.scrollTo(0,0), 
+                300
+            );
+        }
+    })
 
 
 </script>
@@ -70,7 +83,7 @@
             }
         }
 
-        .container, .list-item{
+        .container, .list-item-content{
             cursor: pointer;
             width: max-content;
             background: var(--bg);

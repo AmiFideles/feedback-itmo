@@ -11,7 +11,8 @@ export default {
         type /*approved, notModerated, all*/, 
         page, 
         size, 
-        filters={} /* graduationYear, faculty */
+        filters={}, /* graduationYear, faculty */
+        sort,
     ){
         return sendAPI(
             'get',
@@ -20,6 +21,7 @@ export default {
                 {
                     page,
                     size,
+                    sort
                 },
                 filters
             )

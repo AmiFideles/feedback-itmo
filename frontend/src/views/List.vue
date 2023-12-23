@@ -9,7 +9,7 @@
                         v-model="faculty"
                         keyName="name"
                         placeholder="По подразделению"
-                        class="faculty-select"
+                        class="faculty-select select"
                         :style="{
                             '--bg': 'var(--c-lime-light)'
                         }"
@@ -18,11 +18,22 @@
                     />
                     <VSelect
                         med 
+                        v-model="sort"
+                        :list="sorts"
+                        keyName="name"
+                        placeholder="Сортировка"
+                        class="sort-select select"
+                        :style="{
+                            '--bg': 'var(--c-lime-light)'
+                        }"
+                    />
+                    <VSelect
+                        med 
                         v-model="year"
                         :list="years"
                         keyName="name"
                         placeholder="По году выпуска"
-                        class="year-select"
+                        class="year-select select"
                         :style="{
                             '--bg': 'var(--c-lime-light)'
                         }"
@@ -50,13 +61,23 @@
     import { extendMoment } from 'moment-range';
     const moment = extendMoment(Moment);
 
+//faculty
     const faculty = ref(null);
 
+//years
     const years = computed(()=>[
         {name: 'Все годы', value: null},
         ...Array.from(moment.range('1900', new Date()).by('year')).map(m => {return {name: m.format('YYYY'), value: m.format('YYYY')}}).reverse()
     ]);
     const year = ref(null);
+
+//sort
+    const sorts = computed(()=>[
+        {name: 'Случайно', value: null},
+        {name: 'По дате', value: 'dateTime'},
+        {name: 'По ментору', value: 'mentorName'}
+    ]);
+    const sort = ref(sorts.value[0]);
 
     watch(
         ()=>[faculty.value, year.value?.value], 
@@ -78,9 +99,16 @@
             })
         }
     )
+    
+    watch(
+        sort, 
+        (n)=>{
+            R().pushQuery({sort: n?.value})
+        }
+    )
 
     onMounted(()=>{
-        R().pushQuery({filters: null})
+        R().pushQuery({filters: null, sort: null})
     });
 </script>
 
@@ -90,22 +118,29 @@
             padding-top: 12.8rem;
             @include flex-jtf;
             align-items: baseline;
+            gap: 2.8rem;
 
             p{
                 font-size: 2.4rem;
+                flex-shrink: 0;
             }
         }
     }
 
     .filters{
         display: flex;
-        gap: 2.8rem;
+        flex-wrap: wrap;
+        justify-content: end;
+        gap: 1.6rem 2.8rem;
 
         .faculty-select{
             width: 34rem;
         }
         .year-select{
             width: 32.5rem;
+        }
+        .sort-select{
+            width: 25.4rem;
         }
     }
 
@@ -144,10 +179,7 @@
                 gap: .8rem;
                 width: 100%;
 
-                .faculty-select{
-                    width: 100%;
-                }
-                .year-select{
+                .select{
                     width: 100%;
                 }
             }
